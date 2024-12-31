@@ -12,18 +12,22 @@ cfkit is a CLI tool leveraging Codeforces API.
 
 ## Installation
 
-Before proceeding to install, make sure you have Node (v22.12.0+) and nvm (v0.40.1+) installed. If not installed, install it from [here](https://nodejs.org/en/download).
+Before proceeding to install, make sure you have **Node (v22.12.0+)** and **nvm (v0.40.1+)** installed. If they're not installed, [install it from here](https://nodejs.org/en/download).
 
-First, clone the repository and then `cd` into project directory on your terminal:
-```bash
+Clone the repository and then `cd` into the project directory on terminal:
+```shell
 git clone https://github.com/jinxedbuffer/cfkit.git
 cd cfkit
 ```
-Then, run this command in that directory:
-```bash
+Install all required dependencies:
+```shell
+npm install
+```
+To make the `cfkit` executable available everywhere in your system, run this command:
+```shell
 npm install -g
 ```
-This should install `cfkit` in your system. To confirm, type this in your terminal:
+To confirm installation, type this in terminal:
 ```bash
 cf --help
 ```
@@ -33,6 +37,12 @@ cf --help
 ## Examples
 
 ## Commands
+
+## Uninstallation
+To uninstall `cfkit`, run this command:
+```shell
+npm uninstall cfkit
+```
 
 ## Contributing
 
