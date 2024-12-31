@@ -16,7 +16,6 @@ const logo =
 // default action
 program
     .action(() => {
-        console.log(logo);
         console.log('\nType `cf -h` to see available commands.');
     });
 
@@ -25,19 +24,20 @@ program
     .name('cf')
     .description(logo)
     .usage('[command] [options]')
-    .version('0.1.0');
+    .version('0.1.0', '-v, --version', 'Output the version number')
+    .helpOption('-h, --help [command]', 'Display help for a command');
 
 // subcommands
 program
     .command('random')
-    .description('gives a random problem')
-    .option('-r, --rating <rating>', 'set rating filter')
-    .option('-t, --tags <tags>', 'set tags filter (comma-separated tags)')
+    .description('Gives a random problem from problemset')
+    .option('-r, --rating <rating>', 'Set rating filter')
+    .option('-t, --tags <tags>', 'Set tags filter (comma-separated tags)')
     .action(random);
 
 program
     .command('flush')
-    .description('deletes all stored cache')
+    .description('Deletes all stored cache')
     .action(flush);
 
 program.parse(process.argv);

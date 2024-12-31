@@ -26,7 +26,7 @@ npm install
 npm install -g
 
 # Confirm installation
-cf -V # Should print 0.1.0
+cf -v # Should print 0.1.0
 ```
 
 ## Usage
