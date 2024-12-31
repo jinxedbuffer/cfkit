@@ -1,22 +1,29 @@
 import {fetchJSONFromAPI} from "../api/request.js";
 import ora from "ora";
-import Table from "cli-table";
+import Table from "cli-table3";
 import {CACHE_TIMEOUT_MINUTES, getCache, setCache} from "../helpers/cache-manager.js";
 
 export const random = async function (cmd) {
     const spinner = ora('Finding a random problem...').start();
     const url = 'https://codeforces.com/api/problemset.problems';
     const table = new Table({});
-    const _cache = getCache('problems');
-    let problems;
+    const _cache = {
+        problems: getCache('problems'),
+        problemStats: getCache('problem-stats'),
+    }
 
-    if (_cache && (_cache.timestamp + CACHE_TIMEOUT_MINUTES*60*1000) > Date.now()) {
-        problems = _cache.data;
+    let problems, problemStats;
+
+    if (_cache.problems && _cache.problemStats && (_cache.problems.timestamp + CACHE_TIMEOUT_MINUTES*60*1000) > Date.now()) {
+        problems = _cache.problems.data;
+        problemStats = _cache.problemStats.data;
     } else {
         try {
             const res = await fetchJSONFromAPI(url);
             problems = res.result.problems;
+            problemStats = res.result.problemStatistics;
             setCache('problems', problems);
+            setCache('problem-stats', problemStats);
         } catch (error) {
             spinner.fail('Error fetching from Codeforces API');
             console.error(error);
@@ -54,12 +61,12 @@ export const random = async function (cmd) {
         const link = `https://codeforces.com/problemset/problem/${p.contestId}/${p.index}`;
 
         table.push(
-            {'Contest ID': p.contestId},
-            {'Index': p.index},
-            {'Name': p.name},
-            {'Rating': p.rating},
-            {'Tags': p.tags.join(', ')},
-            {'Link': link},
+            [{colSpan: 2, hAlign: "center", content: `Random Problem # ${p.contestId}${p.index}`}],
+            ['Name', p.name],
+            ['Rating', p.rating ?? "N/A"],
+            ['Solved Count', problemStats[randomIndex].solvedCount],
+            ['Tags', p.tags.join(', ')],
+            ['Link', link],
         );
 
         spinner.stop();

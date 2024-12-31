@@ -4,6 +4,7 @@
 import {program} from "commander";
 import {random} from "./commands/random.js";
 import {flush} from "./commands/flush.js";
+import {contest} from "./commands/contest.js";
 
 const logo =
     ' ▗▄▄▖▗▄▄▄▖▗▖ ▗▖▗▄▄▄▖▗▄▄▄▖\n' +
@@ -25,9 +26,19 @@ program
     .description(logo)
     .usage('[command] [options]')
     .version('0.1.0', '-v, --version', 'Output the version number')
-    .helpOption('-h, --help [command]', 'Display help for a command');
+    .helpOption('-h, --help', 'Display help for a command');
 
 // subcommands
+program
+    .command('contest')
+    .description('Show available contests')
+    .option('-u, --upcoming', 'Show upcoming contests')
+    .option('-a, --active', 'Show active contests')
+    .option('-l, --limit <limit>', 'Number of contests to show', 5)
+    .option('-g, --gym', 'Show only gym contests')
+    .action(contest);
+
+
 program
     .command('random')
     .description('Gives a random problem from problemset')
