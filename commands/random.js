@@ -1,6 +1,7 @@
 import {fetchJSONFromAPI} from "../api/request.js";
 import ora from "ora";
 import Table from "cli-table3";
+import chalk from "chalk";
 import {CACHE_TIMEOUT_MINUTES, getCache, setCache} from "../helpers/cache-manager.js";
 
 export const random = async function (cmd) {
@@ -61,7 +62,7 @@ export const random = async function (cmd) {
         const link = `https://codeforces.com/problemset/problem/${p.contestId}/${p.index}`;
 
         table.push(
-            [{colSpan: 2, hAlign: "center", content: `Random Problem # ${p.contestId}${p.index}`}],
+            [{colSpan: 2, hAlign: "center", content: `Problem # ${p.contestId}${p.index}`}],
             ['Name', p.name],
             ['Rating', p.rating ?? "N/A"],
             ['Solved Count', problemStats[randomIndex].solvedCount],

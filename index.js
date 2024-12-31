@@ -34,7 +34,7 @@ program
     .description('Show available contests')
     .option('-u, --upcoming', 'Show upcoming contests')
     .option('-a, --active', 'Show active contests')
-    .option('-l, --limit <limit>', 'Number of contests to show', 5)
+    .option('-l, --limit <limit>', 'Number of contests to show', 3)
     .option('-g, --gym', 'Show only gym contests')
     .action(contest);
 
