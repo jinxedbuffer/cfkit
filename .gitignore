@@ -40,3 +40,6 @@ coverage/
 # Debugging and temp files
 *.bak
 *.tmp
+
+# Cache
+/cache/
