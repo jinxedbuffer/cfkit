@@ -4,10 +4,9 @@ import Table from "cli-table3";
 import chalk from "chalk";
 import {CACHE_TIMEOUT_MINUTES, getCache, setCache} from "../helpers/cache-manager.js";
 
-export const random = async function (cmd) {
-    const spinner = ora('Finding a random problem...').start();
+export const problem = async function (cmd) {
+    const spinner = ora('Fetching problems...').start();
     const url = 'https://codeforces.com/api/problemset.problems';
-    const table = new Table({});
     const _cache = {
         problems: getCache('problems'),
         problemStats: getCache('problem-stats'),
@@ -26,7 +25,7 @@ export const random = async function (cmd) {
             setCache('problems', problems);
             setCache('problem-stats', problemStats);
         } catch (error) {
-            spinner.fail('Error fetching from Codeforces API');
+            spinner.fail(' Network Error: Failed to fetch problems');
             process.exit(1);
         }
     }
@@ -42,35 +41,41 @@ export const random = async function (cmd) {
         problems = problems.filter(problem =>
             tags.every(sTag =>
                 problem.tags.some(pTag =>
-                        pTag.includes(sTag)
+                    pTag.includes(sTag)
                 )
             )
         );
     }
 
     if (problems.length === 0) {
-        if (rating && tags) {
-            spinner.fail(`No problems found tagged with \'${tags}\' for ${rating} rating :(`);
-        } else if (rating) {
-            spinner.fail(`No problems found for ${rating} rating :(`);
-        } else {
-            spinner.fail(`No problem found tagged with \'${tags}\' :(`);
-        }
+        spinner.fail(' No problems found');
     } else {
+        spinner.stop();
+
         const randomIndex = Math.floor(Math.random() * problems.length);
         const p = problems[randomIndex];
-        const link = `https://codeforces.com/problemset/problem/${p.contestId}/${p.index}`;
+        const ps = problemStats[randomIndex];
 
-        table.push(
-            [{colSpan: 2, hAlign: "center", content: `Problem # ${p.contestId}${p.index}`}],
-            ['Name', p.name],
-            ['Rating', p.rating ?? "N/A"],
-            ['Solved Count', problemStats[randomIndex].solvedCount],
-            ['Tags', p.tags.join(', ')],
-            ['Link', link],
-        );
-
-        spinner.stop();
-        console.log(table.toString());
+        printProblem(p, ps);
     }
+}
+
+const printProblem = function (p, ps) {
+    const table = new Table({
+        colWidths: [20, 60],
+        wordWrap: true
+    });
+    const link = `https://codeforces.com/problemset/problem/${p.contestId}/${p.index}`;
+
+    table.push(
+        [{colSpan: 2, hAlign: "center", content: `Problem # ${p.contestId}${p.index}`}],
+        ['\uf121 Name', p.name],
+        ['\uf437 Points', p.points ?? "N/A"],
+        ['\uf0e7 Rating', p.rating ?? "N/A"],
+        ['\udb80\udc04 Solved Count', ps.solvedCount],
+        ['\uf292 Tags', p.tags.join(', ')],
+        ['\ueb14 Link', link],
+    );
+
+    console.log(table.toString());
 }

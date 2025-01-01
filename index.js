@@ -2,7 +2,7 @@
 'use strict';
 
 import {program} from "commander";
-import {random} from "./commands/random.js";
+import {problem} from "./commands/problem.js";
 import {flush} from "./commands/flush.js";
 import {contest} from "./commands/contest.js";
 
@@ -42,11 +42,13 @@ program
 
 
 program
-    .command('random')
-    .description('Gives a random problem from problemset')
+    .command('problem')
+    .description('Show problems from problemset')
+    .option('-R, --random', 'Show random problems')
+    .option('-l, --limit <limit>', 'Limit how many problems to show', 10)
     .option('-r, --rating <rating>', 'Set rating filter')
     .option('-t, --tags <tags>', 'Set tags filter (comma-separated tags)')
-    .action(random);
+    .action(problem);
 
 program
     .command('flush')

@@ -7,11 +7,11 @@ export const flush = async () => {
     try {
         if (fs.existsSync(CACHE_DIR)) {
             fs.rmSync(CACHE_DIR, {recursive: true, force: true});
-            spinner.succeed("Cache flushed successfully!");
+            spinner.succeed(' Cache flushed successfully');
         } else {
-            spinner.succeed("Cache flushed successfully!");
+            spinner.succeed(' Nothing to flush.');
         }
     } catch (err) {
-        spinner.fail("Couldn't clear cache.");
+        spinner.fail(' Couldn\'t clear cache');
     }
 }

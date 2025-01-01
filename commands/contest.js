@@ -25,7 +25,7 @@ export const contest = async function(cmd) {
             contests = res.result;
             setCache((cmd.gym) ? 'contests-gym' : 'contests', contests);
         } catch (error) {
-            spinner.fail('Error fetching from Codeforces API');
+            spinner.fail(' Network Error: Failed to fetch contests');
             console.error(error);
         }
     }
@@ -72,7 +72,7 @@ export const contest = async function(cmd) {
     }
 
     if (contests.length === 0) {
-        spinner.fail(`No contests found :(`);
+        spinner.fail(` No contests found`);
     } else {
         spinner.stop();
 
@@ -94,7 +94,7 @@ export const contest = async function(cmd) {
             {
                 type: 'list',
                 name: 'contest',
-                message: 'Choose a contest',
+                message: ' Choose a contest',
                 choices: choices,
             }
         ])
@@ -125,30 +125,30 @@ const printContest = function(cmd, c) {
     if (cmd.gym) {
         table.push(
             [{content: `Contest # ${c.id}`, hAlign: "center", colSpan: 2}],
-            ['Name', c.name],
-            ['Type', c.type],
-            ['Phase', c.phase],
-            ['Frozen', c.frozen ? "Yes" : "No"],
-            ['Duration', duration],
-            ['Start Time', startTime],
-            ['Prepared By', c.preparedBy ?? "N/A"],
-            ['Website URL', c.websiteUrl ?? "N/A"],
-            ['Difficulty', c.difficulty ?? "N/A"],
-            ['Kind', c.kind ?? "N/A"],
-            ['Region', c.icpcRegion ?? "N/A"],
-            ['Country', c.country ?? "N/A"],
-            ['City', c.city ?? "N/A"],
-            ['Season', c.season ?? "N/A"],
+            ['\ue780  Name', c.name],
+            ['\uf400  Type', c.type],
+            ['\uf058  Phase', c.phase],
+            ['\uf03a  Frozen', c.frozen ? "Yes" : "No"],
+            ['\udb81\udd1b  Duration', duration],
+            ['\udb81\udc6e  Start Time', startTime],
+            ['\udb80\udc04  Prepared By', c.preparedBy ?? "N/A"],
+            ['\ueb14  Website URL', c.websiteUrl ?? "N/A"],
+            ['\uf463  Difficulty', c.difficulty ?? "N/A"],
+            ['\udb81\udc74  Kind', c.kind ?? "N/A"],
+            ['\udb80\udd46  City', c.city ?? "N/A"],
+            ['\ued00  Region', c.icpcRegion ?? "N/A"],
+            ['\ueb01  Country', c.country ?? "N/A"],
+            ['\udb80\udced  Season', c.season ?? "N/A"],
         );
     } else {
         table.push(
             [{content: `Contest # ${c.id}`, hAlign: "center", colSpan: 2}],
-            ['Name', c.name],
-            ['Phase', c.phase],
-            ['Frozen', c.frozen ? "Yes" : "No"],
-            ['Duration', duration],
-            ['Start Time', startTime],
-            ['Link', `https://codeforces.com/contest/${c.id}`]
+            ['\ue780  Name', c.name],
+            ['\uf058  Phase', c.phase],
+            ['\uf03a  Frozen', c.frozen ? "Yes" : "No"],
+            ['\udb81\udd1b  Duration', duration],
+            ['\udb81\udc6e  Start Time', startTime],
+            ['\ueb14  Link', `https://codeforces.com/contest/${c.id}`]
         );
     }
     console.log(table.toString());
