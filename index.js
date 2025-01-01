@@ -12,7 +12,7 @@ const logo =
     '▐▌   ▐▛▀▀▘▐▛▚▖   █    █  \n' +
     '▝▚▄▄▖▐▌   ▐▌ ▐▌▗▄█▄▖  █  \n' +
     '                         \n' +
-    'Terminal application for algo experts.';
+    'cfkit v0.1.0';
 
 // default action
 program
@@ -36,7 +36,7 @@ program
     .option('-s, --search <name>', 'Search for a contest by its name')
     .option('-u, --upcoming', 'Show upcoming contests')
     .option('-a, --active', 'Show active contests')
-    .option('-l, --limit <limit>', 'Number of contests to show', 3)
+    .option('-l, --limit <limit>', 'Number of contests to show', 100)
     .option('-g, --gym', 'Show only gym contests')
     .action(contest);
 

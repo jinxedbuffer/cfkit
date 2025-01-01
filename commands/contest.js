@@ -4,6 +4,7 @@ import {CACHE_TIMEOUT_MINUTES, getCache, setCache} from "../helpers/cache-manage
 import {fetchJSONFromAPI} from "../api/request.js";
 import moment from "moment";
 import "moment-duration-format";
+import inquirer from "inquirer";
 
 export const contest = async function(cmd) {
     const spinner = ora('Fetching contests...').start();
@@ -75,44 +76,80 @@ export const contest = async function(cmd) {
     } else {
         spinner.stop();
 
-        contests.forEach((c) => {
-            const duration = moment.duration(c.durationSeconds, 's').format('d [days] h [hours] m [minutes]', { trim: 'all' });
-            const startTime =
-                c.startTimeSeconds
-                    ? `${moment.unix(c.startTimeSeconds).format("DD MMM YYYY | hh:mm A")} (${moment.duration(-c.relativeTimeSeconds, 's').humanize(true)})`
-                    : "N/A";
+        const maxIdLength = Math.max(...contests.map(c => c.id.toString().length));
+        const maxTimeLength = Math.max(...contests.map(c => moment.duration(-c.relativeTimeSeconds, 's').humanize(true).length));
+        const padString = (str, length) => str.padEnd(length, ' ');
 
-            const table = new Table();
-            if (cmd.gym) {
-                table.push(
-                    [{content: `Contest # ${c.id}`, hAlign: "center", colSpan: 2}],
-                    ['Name', c.name],
-                    ['Type', c.type],
-                    ['Phase', c.phase],
-                    ['Frozen', c.frozen ? "Yes" : "No"],
-                    ['Duration', duration],
-                    ['Start Time', startTime],
-                    ['Prepared By', c.preparedBy ?? "N/A"],
-                    ['Website URL', c.websiteUrl ?? "N/A"],
-                    ['Difficulty', c.difficulty ?? "N/A"],
-                    ['Kind', c.kind ?? "N/A"],
-                    ['Region', c.icpcRegion ?? "N/A"],
-                    ['Country', c.country ?? "N/A"],
-                    ['City', c.city ?? "N/A"],
-                    ['Season', c.season ?? "N/A"],
-                );
-            } else {
-                table.push(
-                    [{content: `Contest # ${c.id}`, hAlign: "center", colSpan: 2}],
-                    ['Name', c.name],
-                    ['Phase', c.phase],
-                    ['Frozen', c.frozen ? "Yes" : "No"],
-                    ['Duration', duration],
-                    ['Start Time', startTime],
-                    ['Link', `https://codeforces.com/contest/${c.id}`]
-                );
+        const choices = contests.map((c) => {
+            const id = padString(`# ${c.id}`, maxIdLength + 2); // +2 for '# '
+            const time = padString(moment.duration(-c.relativeTimeSeconds, 's').humanize(true), maxTimeLength);
+            const name = c.name;
+            return {
+                name: `${id} │ ${time} │ ${name}`,
+                value: c
             }
-            console.log(table.toString());
         })
+
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'contest',
+                message: 'Choose a contest',
+                choices: choices,
+            }
+        ])
+            .then((answers) => {
+                printContest(cmd, answers.contest);
+            })
+            .catch((err) => {
+                if (!err.message.includes('force closed')) {
+                    console.log(err)
+                }
+            });
     }
+}
+
+const printContest = function(cmd, c) {
+    const duration = moment.duration(c.durationSeconds, 's').format('d [days] h [hours] m [minutes]', { trim: 'all' });
+    const startTime =
+        c.startTimeSeconds
+            ? `${moment.unix(c.startTimeSeconds).format("DD MMM YYYY | hh:mm A")} (${moment.duration(-c.relativeTimeSeconds, 's').humanize(true)})`
+            : "N/A";
+
+    const table = new Table({
+            colWidths: [20, 60],
+            wordWrap: true
+        }
+    );
+
+    if (cmd.gym) {
+        table.push(
+            [{content: `Contest # ${c.id}`, hAlign: "center", colSpan: 2}],
+            ['Name', c.name],
+            ['Type', c.type],
+            ['Phase', c.phase],
+            ['Frozen', c.frozen ? "Yes" : "No"],
+            ['Duration', duration],
+            ['Start Time', startTime],
+            ['Prepared By', c.preparedBy ?? "N/A"],
+            ['Website URL', c.websiteUrl ?? "N/A"],
+            ['Difficulty', c.difficulty ?? "N/A"],
+            ['Kind', c.kind ?? "N/A"],
+            ['Region', c.icpcRegion ?? "N/A"],
+            ['Country', c.country ?? "N/A"],
+            ['City', c.city ?? "N/A"],
+            ['Season', c.season ?? "N/A"],
+        );
+    } else {
+        table.push(
+            [{content: `Contest # ${c.id}`, hAlign: "center", colSpan: 2}],
+            ['Name', c.name],
+            ['Phase', c.phase],
+            ['Frozen', c.frozen ? "Yes" : "No"],
+            ['Duration', duration],
+            ['Start Time', startTime],
+            ['Link', `https://codeforces.com/contest/${c.id}`]
+        );
+    }
+    console.log(table.toString());
 }
