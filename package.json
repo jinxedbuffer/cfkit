@@ -19,6 +19,7 @@
     "commander": "^13.0.0",
     "inquirer": "^12.3.0",
     "moment": "^2.30.1",
+    "moment-duration-format": "^2.3.2",
     "ora": "^8.1.1"
   },
   "type": "module"

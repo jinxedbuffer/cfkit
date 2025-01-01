@@ -33,6 +33,7 @@ program
     .command('contest')
     .description('Show available contests')
     .option('-i, --id <id>', 'Show details of a contest by its ID')
+    .option('-s, --search <name>', 'Search for a contest by its name')
     .option('-u, --upcoming', 'Show upcoming contests')
     .option('-a, --active', 'Show active contests')
     .option('-l, --limit <limit>', 'Number of contests to show', 3)

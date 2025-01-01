@@ -1,6 +1,6 @@
 # cfkit
 
-cfkit is a CLI tool leveraging Codeforces API.
+cfkit is a CLI tool for competitive programming leveraging Codeforces API.
 
 ## Table of Contents
 - [Installation](#installation)

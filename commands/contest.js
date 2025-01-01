@@ -3,6 +3,7 @@ import Table from "cli-table3";
 import {CACHE_TIMEOUT_MINUTES, getCache, setCache} from "../helpers/cache-manager.js";
 import {fetchJSONFromAPI} from "../api/request.js";
 import moment from "moment";
+import "moment-duration-format";
 
 export const contest = async function(cmd) {
     const spinner = ora('Fetching contests...').start();
@@ -48,6 +49,17 @@ export const contest = async function(cmd) {
         )
     }
 
+    if (cmd.search) {
+        const tags = cmd.search.toLowerCase().split(' ');
+        contests = contests.filter(contest =>
+            tags.every(sTag =>
+                contest.name.toLowerCase().split(' ').some(nTag =>
+                    nTag.includes(sTag)
+                )
+            )
+        )
+    }
+
     contests.sort((a, b) => {
         if (!a.relativeTimeSeconds) return 1;
         if (!b.relativeTimeSeconds) return -1;
@@ -64,7 +76,7 @@ export const contest = async function(cmd) {
         spinner.stop();
 
         contests.forEach((c) => {
-            const duration = moment.duration(c.durationSeconds, 's').humanize();
+            const duration = moment.duration(c.durationSeconds, 's').format('d [days] h [hours] m [minutes]', { trim: 'all' });
             const startTime =
                 c.startTimeSeconds
                     ? `${moment.unix(c.startTimeSeconds).format("DD MMM YYYY | hh:mm A")} (${moment.duration(-c.relativeTimeSeconds, 's').humanize(true)})`
