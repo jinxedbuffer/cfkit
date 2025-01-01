@@ -32,6 +32,7 @@ program
 program
     .command('contest')
     .description('Show available contests')
+    .option('-i, --id <id>', 'Show details of a contest by its ID')
     .option('-u, --upcoming', 'Show upcoming contests')
     .option('-a, --active', 'Show active contests')
     .option('-l, --limit <limit>', 'Number of contests to show', 3)

@@ -28,25 +28,31 @@ export const contest = async function(cmd) {
         }
     }
 
-    contests.sort((a, b) => {
-        if (a.relativeTimeSeconds === undefined) return 1;
-        if (b.relativeTimeSeconds === undefined) return -1;
-        return a.relativeTimeSeconds - b.relativeTimeSeconds;
-    });
-
     if (cmd.upcoming && cmd.active) {
         contests = contests.filter(contest =>
             contest.phase === 'BEFORE' || contest.phase === 'CODING'
         );
     } else if (cmd.active) {
         contests = contests.filter(contest =>
-            contest.phase === 'CODING'
+            contest.phase === 'CODING' || contest.phase === 'PENDING_SYSTEM_TEST' || contest.phase === 'SYSTEM_TEST'
         )
     } else if (cmd.upcoming) {
         contests = contests.filter(contest =>
             contest.phase === 'BEFORE'
         )
     }
+
+    if (cmd.id) {
+        contests = contests.filter(contest =>
+            contest.id === parseInt(cmd.id)
+        )
+    }
+
+    contests.sort((a, b) => {
+        if (!a.relativeTimeSeconds) return 1;
+        if (!b.relativeTimeSeconds) return -1;
+        return a.relativeTimeSeconds - b.relativeTimeSeconds;
+    });
 
     if (cmd.limit) {
         contests = contests.slice(0, cmd.limit);
