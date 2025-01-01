@@ -2,6 +2,7 @@ import ora from "ora";
 import Table from "cli-table3";
 import {CACHE_TIMEOUT_MINUTES, getCache, setCache} from "../helpers/cache-manager.js";
 import {fetchJSONFromAPI} from "../api/request.js";
+import moment from "moment";
 
 export const contest = async function(cmd) {
     const spinner = ora('Fetching contests...').start();
@@ -27,6 +28,12 @@ export const contest = async function(cmd) {
         }
     }
 
+    contests.sort((a, b) => {
+        if (a.relativeTimeSeconds === undefined) return 1;
+        if (b.relativeTimeSeconds === undefined) return -1;
+        return a.relativeTimeSeconds - b.relativeTimeSeconds;
+    });
+
     if (cmd.upcoming && cmd.active) {
         contests = contests.filter(contest =>
             contest.phase === 'BEFORE' || contest.phase === 'CODING'
@@ -42,21 +49,19 @@ export const contest = async function(cmd) {
     }
 
     if (cmd.limit) {
-        contests = (cmd.gym) ? contests.slice(-(cmd.limit)) : contests.slice(0, cmd.limit);
+        contests = contests.slice(0, cmd.limit);
     }
 
     if (contests.length === 0) {
         spinner.fail(`No contests found :(`);
     } else {
         spinner.stop();
+
         contests.forEach((c) => {
-            const duration =
-                ((c.durationSeconds / 3600) < 24)
-                    ? (c.durationSeconds / 3600)  + 'h'
-                    : (c.durationSeconds / (3600*24)) + 'd';
+            const duration = moment.duration(c.durationSeconds, 's').humanize();
             const startTime =
                 c.startTimeSeconds
-                    ? new Date(c.startTimeSeconds*1000).toString()
+                    ? `${moment.unix(c.startTimeSeconds).format("DD MMM YYYY | hh:mm A")} (${moment.duration(-c.relativeTimeSeconds, 's').humanize(true)})`
                     : "N/A";
 
             const table = new Table();
@@ -69,7 +74,7 @@ export const contest = async function(cmd) {
                     ['Frozen', c.frozen ? "Yes" : "No"],
                     ['Duration', duration],
                     ['Start Time', startTime],
-                    ['Prepared By', c.preparedBy],
+                    ['Prepared By', c.preparedBy ?? "N/A"],
                     ['Website URL', c.websiteUrl ?? "N/A"],
                     ['Difficulty', c.difficulty ?? "N/A"],
                     ['Kind', c.kind ?? "N/A"],
