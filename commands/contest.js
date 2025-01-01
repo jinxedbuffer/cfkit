@@ -6,7 +6,7 @@ import moment from "moment";
 import "moment-duration-format";
 import inquirer from "inquirer";
 
-export const contest = async function(cmd) {
+export const contest = async function (cmd) {
     const spinner = ora('Fetching contests...').start();
     const url = 'https://codeforces.com/api/contest.list' + ((cmd.gym) ? '?gym=true' : '');
     let contests, _cache;
@@ -17,7 +17,7 @@ export const contest = async function(cmd) {
         _cache = getCache('contests')
     }
 
-    if (_cache && (_cache.timestamp + CACHE_TIMEOUT_MINUTES*60*1000) > Date.now()) {
+    if (_cache && (_cache.timestamp + CACHE_TIMEOUT_MINUTES * 60 * 1000) > Date.now()) {
         contests = _cache.data;
     } else {
         try {
@@ -109,8 +109,8 @@ export const contest = async function(cmd) {
     }
 }
 
-const printContest = function(cmd, c) {
-    const duration = moment.duration(c.durationSeconds, 's').format('d [days] h [hours] m [minutes]', { trim: 'all' });
+const printContest = function (cmd, c) {
+    const duration = moment.duration(c.durationSeconds, 's').format('d [days] h [hours] m [minutes]', {trim: 'all'});
     const startTime =
         c.startTimeSeconds
             ? `${moment.unix(c.startTimeSeconds).format("DD MMM YYYY | hh:mm A")} (${moment.duration(-c.relativeTimeSeconds, 's').humanize(true)})`

@@ -1,7 +1,6 @@
 import {fetchJSONFromAPI} from "../api/request.js";
 import ora from "ora";
 import Table from "cli-table3";
-import chalk from "chalk";
 import {CACHE_TIMEOUT_MINUTES, getCache, setCache} from "../helpers/cache-manager.js";
 
 export const problem = async function (cmd) {
