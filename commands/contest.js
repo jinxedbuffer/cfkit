@@ -5,6 +5,7 @@ import {fetchJSONFromAPI} from "../api/request.js";
 import moment from "moment";
 import "moment-duration-format";
 import inquirer from "inquirer";
+import {consoleWidth, dataColMaxWidth, keyColMaxWidth} from "../helpers/terminal-utils.js";
 
 export const contest = async function (cmd) {
     const spinner = ora('Fetching contests...').start();
@@ -75,41 +76,48 @@ export const contest = async function (cmd) {
         spinner.fail(` No contests found`);
     } else {
         spinner.stop();
-
-        const maxIdLength = Math.max(...contests.map(c => c.id.toString().length));
-        const maxTimeLength = Math.max(...contests.map(c => moment.duration(-c.relativeTimeSeconds, 's').humanize(true).length));
-        const padString = (str, length) => str.padEnd(length, ' ');
-
-        const choices = contests.map((c) => {
-            const id = padString(`# ${c.id}`, maxIdLength + 2); // +2 for '# '
-            const time = padString(moment.duration(-c.relativeTimeSeconds, 's').humanize(true), maxTimeLength);
-            const name = c.name;
-            return {
-                name: `${id} │ ${time} │ ${name}`,
-                value: c
-            }
-        })
-
-        inquirer.prompt([
-            {
-                type: 'list',
-                name: 'contest',
-                message: ' Choose a contest',
-                choices: choices,
-            }
-        ])
-            .then((answers) => {
-                printContest(cmd, answers.contest);
-            })
-            .catch((err) => {
-                if (!err.message.includes('force closed')) {
-                    console.log(err)
-                }
-            });
+        if (cmd.id) {
+            printContest(cmd, contests[0]);
+        } else {
+            displayMenu(cmd, contests);
+        }
     }
 }
 
-const printContest = function (cmd, c) {
+const displayMenu = function (cmd, contests) {
+    const width = process.stdout.columns;
+    const maxIdLength = Math.max(...contests.map(c => c.id.toString().length));
+    const maxTimeLength = Math.max(...contests.map(c => moment.duration(-c.relativeTimeSeconds, 's').humanize(true).length));
+
+    const choices = contests.map((c) => {
+        const id = `# ${c.id}`.padEnd(maxIdLength + 2, ' ');
+        const time = (moment.duration(-c.relativeTimeSeconds, 's').humanize(true)).toString().padEnd(maxTimeLength, ' ');
+        const name = c.name.slice(0, width - maxIdLength - maxTimeLength - 10);
+        return {
+            name: `${id} │ ${time} │ ${name}`,
+            value: c
+        }
+    })
+
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'contest',
+            message: ' Choose a contest',
+            choices: choices,
+        }
+    ])
+        .then((answers) => {
+            printContest(cmd, answers.contest, () => displayMenu(cmd, contests));
+        })
+        .catch((err) => {
+            if (!err.message.includes('force closed')) {
+                console.log(err)
+            }
+        });
+}
+
+const printContest = function (cmd, c, goBack) {
     const duration = moment.duration(c.durationSeconds, 's').format('d [days] h [hours] m [minutes]', {trim: 'all'});
     const startTime =
         c.startTimeSeconds
@@ -117,14 +125,14 @@ const printContest = function (cmd, c) {
             : "N/A";
 
     const table = new Table({
-            colWidths: [20, 60],
+            colWidths: [keyColMaxWidth, ((consoleWidth - (keyColMaxWidth + 3)) < dataColMaxWidth ? (consoleWidth - (keyColMaxWidth + 3)) : dataColMaxWidth)],
             wordWrap: true
         }
     );
 
     if (cmd.gym) {
         table.push(
-            [{content: `Contest # ${c.id}`, hAlign: "center", colSpan: 2}],
+            [{content: `Cont-est # ${c.id}`, hAlign: "center", colSpan: 2}],
             ['\ue780  Name', c.name],
             ['\uf400  Type', c.type],
             ['\uf058  Phase', c.phase],
@@ -152,4 +160,25 @@ const printContest = function (cmd, c) {
         );
     }
     console.log(table.toString());
+
+    inquirer
+        .prompt([
+            {
+                type: 'confirm',
+                name: 'back',
+                message: ' Go back to menu?',
+                default: true,
+            },
+        ])
+        .then((answers) => {
+            if (answers.back) {
+                goBack();
+            } else {
+                process.exit(0);
+            }
+        }).catch(err => {
+        if (!err.message.includes('force closed')) {
+            console.log(err);
+        }
+    });
 }
