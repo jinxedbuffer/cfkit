@@ -27,7 +27,7 @@ export const random = async function (cmd) {
             setCache('problem-stats', problemStats);
         } catch (error) {
             spinner.fail('Error fetching from Codeforces API');
-            console.error(error);
+            process.exit(1);
         }
     }
 
@@ -73,5 +73,4 @@ export const random = async function (cmd) {
         spinner.stop();
         console.log(table.toString());
     }
-
 }
