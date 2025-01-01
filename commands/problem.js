@@ -67,7 +67,6 @@ export const problem = async function (cmd) {
                     duplicateChecker.push(randomIndex);
                     randomProblems.push(problems[randomIndex]);
                 }
-                r
             }
             problems = randomProblems;
         } else {
