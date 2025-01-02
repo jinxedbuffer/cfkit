@@ -1,5 +1,8 @@
 # cfkit
 
+[![NPM Version](https://img.shields.io/npm/v/@jinxedbuffer/cfkit.svg?style=flat)](https://www.npmjs.com/package/@jinxedbuffer/cfkit)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/jinxedbuffer/cfkit)](https://github.com/jinxedbuffer/cfkit)
+
 cfkit is a CLI tool for competitive programming leveraging Codeforces API.
 
 **Terminals tested on**: kitty, Konsole
@@ -26,7 +29,7 @@ installed, [install it from here](https://nodejs.org/en/download).
 npm install -g @jinxedbuffer/cfkit
 
 # Confirm installation
-cf -V # Should print 0.1.0
+cf -v # Should print 0.1.0
 ```
 
 ## Upgrading
@@ -127,7 +130,7 @@ cf problem -t "tree"
 
 ### 4. Delete All Stored Cache
 
-To delete all stored cache, use the flush command:
+To delete all stored cache, use the `flush` command:
 
 ```shell
 cf flush
@@ -140,7 +143,7 @@ This will clear the cache data from your system.
 To uninstall `cfkit`, run this command:
 
 ```shell
-npm uninstall @jinxedbuffer/cfkit -g
+npm uninstall -g @jinxedbuffer/cfkit
 ```
 
 ## Contributing
