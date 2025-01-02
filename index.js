@@ -45,6 +45,7 @@ program
     .command('problem')
     .description('Show problems from problemset')
     .option('-R, --randomize', 'Randomize problems')
+    .option('-s, --search <name>', 'Search for a problem by its name')
     .option('-c, --contest <id>', 'Show problems of a specific contest')
     .option('-l, --limit <limit>', 'Limit how many problems to show', '15')
     .option('-r, --rating <rating>', 'Set rating filter')

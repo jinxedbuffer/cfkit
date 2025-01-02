@@ -133,7 +133,7 @@ const printContest = function (cmd, c, back) {
 
     if (cmd.gym) {
         table.push(
-            [{content: `Cont-est # ${c.id}`, hAlign: "center", colSpan: 2}],
+            [{content: `\uf400 Contest # ${c.id}`, hAlign: "center", colSpan: 2}],
             ['\ue780  Name', c.name],
             ['\uf400  Type', c.type],
             ['\uf058  Phase', c.phase],
@@ -164,15 +164,15 @@ const printContest = function (cmd, c, back) {
 
     const choices = [
         {
-            name: "Show problems of this contest",
+            name: "\ueae9 Problemset",
             value: "contestProblems"
         },
         {
-            name: "Go back",
+            name: "\uf104 Back",
             value: "back"
         },
         {
-            name: "Exit",
+            name: "\udb80\ude06 Exit",
             value: "exit"
         }
     ];

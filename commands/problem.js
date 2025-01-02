@@ -36,6 +36,7 @@ export const problem = async function (cmd, back) {
     const rating = cmd.rating ? parseInt(cmd.rating) : null;
     const contest = cmd.contest ? parseInt(cmd.contest) : null;
     const tags = cmd.tags ? cmd.tags.split(',').map(tag => tag.trim()) : null;
+    const searchTags = cmd.search ? cmd.search.toLowerCase().split(' ') : null;
 
     if (rating) {
         problems = problems.filter(problem => problem.rating === rating);
@@ -53,6 +54,16 @@ export const problem = async function (cmd, back) {
                 )
             )
         );
+    }
+
+    if (searchTags) {
+        problems = problems.filter(problem =>
+            searchTags.every(sTag =>
+                problem.name.toLowerCase().split(' ').some(nTag =>
+                    nTag.includes(sTag)
+                )
+            )
+        )
     }
 
     if (problems.length === 0) {
@@ -148,15 +159,15 @@ const printProblem = function (p, back) {
 
     const choices = [
         {
-            name: "Show contest details",
+            name: "\uf400 Contest",
             value: "contestDetails"
         },
         {
-            name: "Go back",
+            name: "\uf104 Back",
             value: "back"
         },
         {
-            name: "Exit",
+            name: "\udb80\ude06 Exit",
             value: "exit"
         }
     ];

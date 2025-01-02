@@ -1,6 +1,6 @@
 {
   "name": "cfkit",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "cf": "index.js"
   },
   "private": true,
-  "author": "jinxedbuffer",
+  "author": "jinxedbuffer <srijandhak04@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "axios": "^1.7.9",
