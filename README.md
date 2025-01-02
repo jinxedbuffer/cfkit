@@ -22,17 +22,19 @@ Before proceeding to install, make sure you have **Node (v22.12.0+)** and **nvm 
 installed, [install it from here](https://nodejs.org/en/download).
 
 ```shell
-# Install cfkit
-npm install cfkit -g
+# Install cfkit globally
+npm install -g @jinxedbuffer/cfkit
 
 # Confirm installation
-cf -v # Should print 0.1.0
+cf -V # Should print 0.1.0
 ```
 
 ## Upgrading
 
+To upgrade `cfkit` to the latest version, run:
+
 ```shell
-npm update cfkit
+npm install -g @jinxedbuffer/cfkit@latest
 ```
 
 ## Usage
@@ -138,7 +140,7 @@ This will clear the cache data from your system.
 To uninstall `cfkit`, run this command:
 
 ```shell
-npm uninstall cfkit -g
+npm uninstall @jinxedbuffer/cfkit -g
 ```
 
 ## Contributing

@@ -1,5 +1,5 @@
 {
-  "name": "cfkit",
+  "name": "@jinxedbuffer/cfkit",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,6 @@
   "bin": {
     "cf": "index.js"
   },
-  "private": true,
   "author": "jinxedbuffer <srijandhak04@gmail.com>",
   "license": "MIT",
   "dependencies": {
