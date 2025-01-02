@@ -10,9 +10,9 @@ a [nerd font](https://www.nerdfonts.com/).**
 ## Table of Contents
 
 - [Installation](#installation)
+- [Upgrading](#upgrading)
 - [Usage](#usage)
-- [Examples](#examples)
-- [Commands](#commands)
+- [Uninstallation](#uninstallation)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -29,7 +29,7 @@ npm install cfkit -g
 cf -v # Should print 0.1.0
 ```
 
-### Upgrading
+## Upgrading
 
 ```shell
 npm update cfkit
