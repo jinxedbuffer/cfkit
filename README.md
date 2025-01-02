@@ -4,9 +4,11 @@ cfkit is a CLI tool for competitive programming leveraging Codeforces API.
 
 **Terminals tested on**: kitty, Konsole
 
-**If icons are not being rendered properly on your terminal, consider installing a [nerd font](https://www.nerdfonts.com/).**
+**If icons are not being rendered properly on your terminal, consider installing
+a [nerd font](https://www.nerdfonts.com/).**
 
 ## Table of Contents
+
 - [Installation](#installation)
 - [Usage](#usage)
 - [Examples](#examples)
@@ -16,38 +18,133 @@ cfkit is a CLI tool for competitive programming leveraging Codeforces API.
 
 ## Installation
 
-Before proceeding to install, make sure you have **Node (v22.12.0+)** and **nvm (v0.40.1+)** installed. If they're not installed, [install it from here](https://nodejs.org/en/download).
+Before proceeding to install, make sure you have **Node (v22.12.0+)** and **nvm (v0.40.1+)** installed. If they're not
+installed, [install it from here](https://nodejs.org/en/download).
 
 ```shell
-# Clone the repository and then `cd` into the project directory on terminal
-git clone https://github.com/jinxedbuffer/cfkit.git
-cd cfkit
-
-# Install all required dependencies
-npm install
-
-# Make the `cfkit` executable available everywhere in your system
-npm install -g
+# Install cfkit
+npm install cfkit -g
 
 # Confirm installation
 cf -v # Should print 0.1.0
 ```
 
+### Upgrading
+
+```shell
+npm update cfkit
+```
+
 ## Usage
 
-## Examples
+Once installed, you can use the cf command in your terminal. Here's an overview of how to use the available commands:
 
-## Commands
+### 1. Display Available Commands
+
+To see the available commands, run:
+
+```shell
+cf -h
+```
+
+This will display a list of commands and their descriptions.
+
+### 2. Show Available Contests
+
+Use the `contest` command to view available contests.
+
+```shell
+cf contest [options]
+```
+
+**Options:**
+
+- `-i, --id <id>`: Show details of a contest by its ID.
+- `-s, --search <name>`: Search for a contest by its name.
+- `-u, --upcoming`: Show upcoming contests.
+- `-a, --active`: Show active contests.
+- `-l, --limit <limit>`: Limit the number of contests to show (default is 100).
+- `-g, --gym`: Show only gym contests.
+
+**Example:**
+
+- Show details of a contest by ID:
+
+```shell
+cf contest -i 12345
+```
+
+- Show upcoming contests:
+
+```shell
+cf contest -u
+```
+
+- Search for a contest by name:
+
+```shell
+cf contest -s "Codeforces Round"
+```
+
+### 3. Show Problems from Problemset
+
+Use the `problem` command to view problems from the problem set.
+
+```shell
+cf problem [options]
+```
+
+**Options:**
+
+- `-R, --randomize`: Randomize the list of problems.
+- `-s, --search <name>`: Search for a problem by its name.
+- `-c, --contest <id>`: Show problems from a specific contest.
+- `-l, --limit <limit>`: Limit the number of problems to show (default is 15).
+- `-r, --rating <rating>`: Set a rating filter.
+- `-t, --tags <tags>`: Set tags filter (comma-separated tags).
+
+**Example:**
+
+- Show 10 problems with rating equal to 1500:
+
+```shell
+cf problem -r 1500 -l 10
+```
+
+- Search for problems by name:
+
+```shell
+cf problem -s "queen"
+```
+
+- Search for problems by tags:
+
+```shell
+cf problem -t "tree"
+```
+
+### 4. Delete All Stored Cache
+
+To delete all stored cache, use the flush command:
+
+```shell
+cf flush
+```
+
+This will clear the cache data from your system.
 
 ## Uninstallation
+
 To uninstall `cfkit`, run this command:
+
 ```shell
-npm uninstall cfkit
+npm uninstall cfkit -g
 ```
 
 ## Contributing
 
 Contributions are welcome! If you'd like to contribute, please follow these steps:
+
 1. Fork the repository.
 2. Create a new branch (`git checkout -b feature/your-feature-name`).
 3. Make your changes.
@@ -56,4 +153,5 @@ Contributions are welcome! If you'd like to contribute, please follow these step
 6. Open a pull request with a description of your changes.
 
 ## License
+
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
