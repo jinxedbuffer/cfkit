@@ -164,7 +164,7 @@ const printContest = function (cmd, c, back) {
 
     const choices = [
         {
-            name: "Show problems in this contest",
+            name: "Show problems of this contest",
             value: "contestProblems"
         },
         {

@@ -46,7 +46,7 @@ program
     .description('Show problems from problemset')
     .option('-R, --randomize', 'Randomize problems')
     .option('-c, --contest <id>', 'Show problems of a specific contest')
-    .option('-l, --limit <limit>', 'Limit how many problems to show', '10')
+    .option('-l, --limit <limit>', 'Limit how many problems to show', '15')
     .option('-r, --rating <rating>', 'Set rating filter')
     .option('-t, --tags <tags>', 'Set tags filter (comma-separated tags)')
     .action((cmd) => problem(cmd, () => process.exit(0)));
