@@ -5,6 +5,7 @@ import {CACHE_TIMEOUT_MINUTES, getCache, setCache} from "../helpers/cache-manage
 import inquirer from "inquirer";
 import {consoleWidth, dataColMaxWidth, keyColMaxWidth} from "../helpers/terminal-utils.js";
 import {contest} from "./contest.js";
+import open from "open";
 
 export const problem = async function (cmd, back) {
     const spinner = ora('Fetching problems...').start();
@@ -96,7 +97,6 @@ export const problem = async function (cmd, back) {
 }
 
 const displayProblemsMenu = function (problems, back) {
-
     const width = process.stdout.columns;
     const maxIdLength = Math.max(...problems.map(p => {
         return (`${p.contestId}${p.index}`).length;
@@ -137,11 +137,8 @@ const displayProblemsMenu = function (problems, back) {
 }
 
 const printProblem = function (p, back) {
-    const link = `https://codeforces.com/problemset/problem/${p.contestId}/${p.index}`;
-
-    const customDataColMaxWidth = (link.length + 2 > dataColMaxWidth) ? (link.length + 2) : dataColMaxWidth;
     const table = new Table({
-        colWidths: [keyColMaxWidth, ((consoleWidth - (keyColMaxWidth + 3)) < customDataColMaxWidth ? (consoleWidth - (keyColMaxWidth + 3)) : customDataColMaxWidth)],
+        colWidths: [keyColMaxWidth, ((consoleWidth - (keyColMaxWidth + 3)) < dataColMaxWidth ? (consoleWidth - (keyColMaxWidth + 3)) : dataColMaxWidth)],
         wordWrap: true
     });
 
@@ -152,12 +149,18 @@ const printProblem = function (p, back) {
         ['\uf0e7  Rating', p.rating ?? "N/A"],
         ['\udb80\udc04  Solved Count', p.solvedCount],
         ['\uf292  Tags', p.tags.join(', ')],
-        ['\ueb14  Link', link],
     );
 
     console.log(table.toString());
+    chooser(p, back);
+}
 
+const chooser = function (p, back) {
     const choices = [
+        {
+            name: "\uf488 Open in browser",
+            value: "browserOpen"
+        },
         {
             name: "\uf400 Contest",
             value: "contestDetails"
@@ -181,18 +184,35 @@ const printProblem = function (p, back) {
             },
         ])
         .then((answers) => {
-            if (answers.options === "back") {
-                back();
-            } else if (answers.options === "contestDetails") {
-                contest({
-                        id: p.contestId,
-                    },
-                    () => printProblem(p, back)
-                ).catch((err) => {
-                    console.log(err);
-                });
-            } else {
-                process.exit(0);
+            switch (answers.options) {
+                case 'contestProblems': {
+                    contest({
+                            id: p.contestId,
+                        },
+                        () => printProblem(p, back)
+                    ).catch((err) => {
+                        console.log(err);
+                    });
+                    break;
+                }
+
+                case 'back': {
+                    back();
+                    break;
+                }
+
+                case 'browserOpen': {
+                    open(`https://codeforces.com/problemset/problem/${p.contestId}/${p.index}`)
+                        .then(() => chooser(p, back))
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                    break;
+                }
+
+                default: {
+                    process.exit(0);
+                }
             }
         }).catch(err => {
         if (!err.message.includes('force closed')) {

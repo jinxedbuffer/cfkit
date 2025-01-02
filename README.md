@@ -29,7 +29,7 @@ installed, [install it from here](https://nodejs.org/en/download).
 npm install -g @jinxedbuffer/cfkit
 
 # Confirm installation
-cf -v # Should print 0.1.0
+cf -v # Should print the version number
 ```
 
 ## Upgrading

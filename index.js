@@ -12,7 +12,7 @@ const logo =
     '▐▌   ▐▛▀▀▘▐▛▚▖   █    █  \n' +
     '▝▚▄▄▖▐▌   ▐▌ ▐▌▗▄█▄▖  █  \n' +
     '                         \n' +
-    'cfkit v0.1.0';
+    'cfkit v0.1.2';
 
 // default action
 program
@@ -25,7 +25,7 @@ program
     .name('cf')
     .description(logo)
     .usage('[command] [options]')
-    .version('0.1.0', '-v, --version', 'Output the version number')
+    .version('0.1.2', '-v, --version', 'Output the version number')
     .helpOption('-h, --help', 'Display help for a command');
 
 // subcommands

@@ -6,6 +6,7 @@ import moment from "moment";
 import "moment-duration-format";
 import inquirer from "inquirer";
 import {consoleWidth, dataColMaxWidth, keyColMaxWidth} from "../helpers/terminal-utils.js";
+import open from "open";
 import {problem} from "./problem.js";
 
 export const contest = async function (cmd, back) {
@@ -119,6 +120,7 @@ const displayContestMenu = function (cmd, contests) {
 }
 
 const printContest = function (cmd, c, back) {
+    const link = (cmd.gym) ? c.websiteUrl : `https://codeforces.com/contest/${c.id}`;
     const duration = moment.duration(c.durationSeconds, 's').format('d [days] h [hours] m [minutes]', {trim: 'all'});
     const startTime =
         c.startTimeSeconds
@@ -157,12 +159,21 @@ const printContest = function (cmd, c, back) {
             ['\uf03a  Frozen', c.frozen ? "Yes" : "No"],
             ['\udb81\udd1b  Duration', duration],
             ['\udb81\udc6e  Start Time', startTime],
-            ['\ueb14  Link', `https://codeforces.com/contest/${c.id}`]
+            ['\ueb14  Link', link]
         );
     }
     console.log(table.toString());
+    chooser(cmd, c, back, link);
+}
 
-    const choices = [
+const chooser = function (cmd, c, back, link) {
+    let choices = [
+        ...(link ? [
+            {
+                name: "\uf488 Open in browser",
+                value: "browserOpen"
+            }
+        ] : []),
         {
             name: "\ueae9 Problemset",
             value: "contestProblems"
@@ -187,15 +198,32 @@ const printContest = function (cmd, c, back) {
             },
         ])
         .then((answers) => {
-            if (answers.options === "back") {
-                back();
-            } else if (answers.options === "contestProblems") {
-                problem({
-                    contest: c.id,
-                }, () => displayContestMenu(cmd, c, back))
-                    .catch((err) => console.log(err));
-            } else {
-                process.exit(0);
+            switch (answers.options) {
+                case 'contestProblems': {
+                    problem({
+                        contest: c.id,
+                    }, () => displayContestMenu(cmd, c, back))
+                        .catch((err) => console.log(err));
+                    break;
+                }
+
+                case 'back': {
+                    back();
+                    break;
+                }
+
+                case 'browserOpen': {
+                    open(link)
+                        .then(() => chooser(c, back, link))
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                    break;
+                }
+
+                default: {
+                    process.exit(0);
+                }
             }
         }).catch(err => {
         if (!err.message.includes('force closed')) {
