@@ -185,7 +185,7 @@ const chooser = function (p, back) {
         ])
         .then((answers) => {
             switch (answers.options) {
-                case 'contestProblems': {
+                case 'contestDetails': {
                     contest({
                             id: p.contestId,
                         },
