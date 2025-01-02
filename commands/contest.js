@@ -6,8 +6,9 @@ import moment from "moment";
 import "moment-duration-format";
 import inquirer from "inquirer";
 import {consoleWidth, dataColMaxWidth, keyColMaxWidth} from "../helpers/terminal-utils.js";
+import {problem} from "./problem.js";
 
-export const contest = async function (cmd) {
+export const contest = async function (cmd, back) {
     const spinner = ora('Fetching contests...').start();
     const url = 'https://codeforces.com/api/contest.list' + ((cmd.gym) ? '?gym=true' : '');
     let contests, _cache;
@@ -77,14 +78,14 @@ export const contest = async function (cmd) {
     } else {
         spinner.stop();
         if (cmd.id) {
-            printContest(cmd, contests[0]);
+            printContest(cmd, contests[0], back);
         } else {
-            displayMenu(cmd, contests);
+            displayContestMenu(cmd, contests);
         }
     }
 }
 
-const displayMenu = function (cmd, contests) {
+const displayContestMenu = function (cmd, contests) {
     const width = process.stdout.columns;
     const maxIdLength = Math.max(...contests.map(c => c.id.toString().length));
     const maxTimeLength = Math.max(...contests.map(c => moment.duration(-c.relativeTimeSeconds, 's').humanize(true).length));
@@ -108,7 +109,7 @@ const displayMenu = function (cmd, contests) {
         }
     ])
         .then((answers) => {
-            printContest(cmd, answers.contest, () => displayMenu(cmd, contests));
+            printContest(cmd, answers.contest, () => displayContestMenu(cmd, contests));
         })
         .catch((err) => {
             if (!err.message.includes('force closed')) {
@@ -117,7 +118,7 @@ const displayMenu = function (cmd, contests) {
         });
 }
 
-const printContest = function (cmd, c, goBack) {
+const printContest = function (cmd, c, back) {
     const duration = moment.duration(c.durationSeconds, 's').format('d [days] h [hours] m [minutes]', {trim: 'all'});
     const startTime =
         c.startTimeSeconds
@@ -161,18 +162,38 @@ const printContest = function (cmd, c, goBack) {
     }
     console.log(table.toString());
 
+    const choices = [
+        {
+            name: "Show problems in this contest",
+            value: "contestProblems"
+        },
+        {
+            name: "Go back",
+            value: "back"
+        },
+        {
+            name: "Exit",
+            value: "exit"
+        }
+    ];
+
     inquirer
         .prompt([
             {
-                type: 'confirm',
-                name: 'back',
-                message: ' Go back to menu?',
-                default: true,
+                type: 'list',
+                name: 'options',
+                message: ' Choose an option',
+                choices: choices,
             },
         ])
         .then((answers) => {
-            if (answers.back) {
-                goBack();
+            if (answers.options === "back") {
+                back();
+            } else if (answers.options === "contestProblems") {
+                problem({
+                    contest: c.id,
+                }, () => displayContestMenu(cmd, c, back))
+                    .catch((err) => console.log(err));
             } else {
                 process.exit(0);
             }

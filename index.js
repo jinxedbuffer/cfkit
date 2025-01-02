@@ -38,17 +38,18 @@ program
     .option('-a, --active', 'Show active contests')
     .option('-l, --limit <limit>', 'Number of contests to show', '100')
     .option('-g, --gym', 'Show only gym contests')
-    .action(contest);
+    .action((cmd) => contest(cmd, () => process.exit(0)));
 
 
 program
     .command('problem')
     .description('Show problems from problemset')
     .option('-R, --randomize', 'Randomize problems')
+    .option('-c, --contest <id>', 'Show problems of a specific contest')
     .option('-l, --limit <limit>', 'Limit how many problems to show', '10')
     .option('-r, --rating <rating>', 'Set rating filter')
     .option('-t, --tags <tags>', 'Set tags filter (comma-separated tags)')
-    .action(problem);
+    .action((cmd) => problem(cmd, () => process.exit(0)));
 
 program
     .command('flush')

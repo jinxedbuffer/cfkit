@@ -4,8 +4,9 @@ import Table from "cli-table3";
 import {CACHE_TIMEOUT_MINUTES, getCache, setCache} from "../helpers/cache-manager.js";
 import inquirer from "inquirer";
 import {consoleWidth, dataColMaxWidth, keyColMaxWidth} from "../helpers/terminal-utils.js";
+import {contest} from "./contest.js";
 
-export const problem = async function (cmd) {
+export const problem = async function (cmd, back) {
     const spinner = ora('Fetching problems...').start();
     const url = 'https://codeforces.com/api/problemset.problems';
     const _cache = getCache('problems');
@@ -33,10 +34,15 @@ export const problem = async function (cmd) {
 
     const limit = cmd.limit ? parseInt(cmd.limit) : 10;
     const rating = cmd.rating ? parseInt(cmd.rating) : null;
+    const contest = cmd.contest ? parseInt(cmd.contest) : null;
     const tags = cmd.tags ? cmd.tags.split(',').map(tag => tag.trim()) : null;
 
     if (rating) {
         problems = problems.filter(problem => problem.rating === rating);
+    }
+
+    if (contest) {
+        problems = problems.filter(problem => problem.contestId === contest);
     }
 
     if (tags) {
@@ -74,11 +80,11 @@ export const problem = async function (cmd) {
         }
 
         spinner.stop();
-        displayMenu(problems);
+        displayProblemsMenu(problems, back);
     }
 }
 
-const displayMenu = function (problems) {
+const displayProblemsMenu = function (problems, back) {
 
     const width = process.stdout.columns;
     const maxIdLength = Math.max(...problems.map(p => {
@@ -109,7 +115,7 @@ const displayMenu = function (problems) {
     ])
         .then((answers) => {
             printProblem(answers.problem, () => {
-                displayMenu(problems);
+                displayProblemsMenu(problems, back);
             });
         })
         .catch((err) => {
@@ -119,13 +125,14 @@ const displayMenu = function (problems) {
         });
 }
 
-const printProblem = function (p, goBack) {
+const printProblem = function (p, back) {
+    const link = `https://codeforces.com/problemset/problem/${p.contestId}/${p.index}`;
+
+    const customDataColMaxWidth = (link.length + 2 > dataColMaxWidth) ? (link.length + 2) : dataColMaxWidth;
     const table = new Table({
-        colWidths: [keyColMaxWidth, ((consoleWidth - (keyColMaxWidth + 3)) < dataColMaxWidth ? (consoleWidth - (keyColMaxWidth + 3)) : dataColMaxWidth)],
+        colWidths: [keyColMaxWidth, ((consoleWidth - (keyColMaxWidth + 3)) < customDataColMaxWidth ? (consoleWidth - (keyColMaxWidth + 3)) : customDataColMaxWidth)],
         wordWrap: true
     });
-
-    const link = `https://codeforces.com/problemset/problem/${p.contestId}/${p.index}`;
 
     table.push(
         [{colSpan: 2, hAlign: "center", content: `Problem # ${p.contestId}${p.index}`}],
@@ -139,18 +146,40 @@ const printProblem = function (p, goBack) {
 
     console.log(table.toString());
 
+    const choices = [
+        {
+            name: "Show contest details",
+            value: "contestDetails"
+        },
+        {
+            name: "Go back",
+            value: "back"
+        },
+        {
+            name: "Exit",
+            value: "exit"
+        }
+    ];
     inquirer
         .prompt([
             {
-                type: 'confirm',
-                name: 'back',
-                message: ' Go back to menu?',
-                default: true,
+                type: 'list',
+                name: 'options',
+                message: ' Choose an option',
+                choices: choices,
             },
         ])
         .then((answers) => {
-            if (answers.back) {
-                goBack();
+            if (answers.options === "back") {
+                back();
+            } else if (answers.options === "contestDetails") {
+                contest({
+                        id: p.contestId,
+                    },
+                    () => printProblem(p, back)
+                ).catch((err) => {
+                    console.log(err);
+                });
             } else {
                 process.exit(0);
             }
