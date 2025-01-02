@@ -76,7 +76,7 @@ cf contest [options]
 - Show details of a contest by ID:
 
 ```shell
-cf contest -i 12345
+cf contest -i 1780
 ```
 
 - Show upcoming contests:

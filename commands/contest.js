@@ -214,7 +214,7 @@ const chooser = function (cmd, c, back, link) {
 
                 case 'browserOpen': {
                     open(link)
-                        .then(() => chooser(c, back, link))
+                        .then(() => chooser(cmd, c, back, link))
                         .catch((err) => {
                             console.log(err);
                         });
