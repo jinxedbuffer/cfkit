@@ -5,6 +5,7 @@ import {program} from "commander";
 import {problem} from "./commands/problem.js";
 import {flush} from "./commands/flush.js";
 import {contest} from "./commands/contest.js";
+import {upgrade} from "./commands/upgrade.js";
 
 const logo =
     ' ▗▄▄▖▗▄▄▄▖▗▖ ▗▖▗▄▄▄▖▗▄▄▄▖\n' +
@@ -12,15 +13,16 @@ const logo =
     '▐▌   ▐▛▀▀▘▐▛▚▖   █    █  \n' +
     '▝▚▄▄▖▐▌   ▐▌ ▐▌▗▄█▄▖  █  \n' +
     '                         \n' +
-    'cfkit v0.1.3';
+    'cfkit v0.1.4';
 
 // default action
 program
     .action(() => {
-        console.log('\nType `cf -h` to see available commands.');
+        console.log('\n`cf -h` to see help');
     });
 
 // info
+
 program
     .name('cf')
     .description(logo)
@@ -51,6 +53,11 @@ program
     .option('-r, --rating <rating>', 'Set rating filter')
     .option('-t, --tags <tags>', 'Set tags filter (comma-separated tags)')
     .action((cmd) => problem(cmd, () => process.exit(0)));
+
+program
+    .command('upgrade')
+    .description('Upgrade cfkit')
+    .action(upgrade);
 
 program
     .command('flush')

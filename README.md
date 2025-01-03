@@ -1,6 +1,7 @@
 # cfkit
 
 [![NPM Version](https://img.shields.io/npm/v/@jinxedbuffer/cfkit.svg?style=flat)](https://www.npmjs.com/package/@jinxedbuffer/cfkit)
+![NPM Downloads](https://img.shields.io/npm/dw/%40jinxedbuffer%2Fcfkit)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/jinxedbuffer/cfkit)](https://github.com/jinxedbuffer/cfkit)
 
 cfkit is a CLI tool for competitive programming leveraging Codeforces API.
@@ -37,7 +38,7 @@ cf -v # Should print the version number
 To upgrade `cfkit` to the latest version, run:
 
 ```shell
-npm install -g @jinxedbuffer/cfkit@latest
+cf upgrade
 ```
 
 ## Usage
