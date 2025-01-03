@@ -27,7 +27,7 @@ installed, [install it from here](https://nodejs.org/en/download).
 
 ```shell
 # Install cfkit globally
-npm install -g @jinxedbuffer/cfkit
+npm i -g @jinxedbuffer/cfkit
 
 # Confirm installation
 cf -v # Should print the version number
