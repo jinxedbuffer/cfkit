@@ -28,7 +28,7 @@ program
     .name('cf')
     .description(logo)
     .usage('[command] [options]')
-    .version('0.1.6', '-v, --version', 'Output the version number')
+    .version('0.1.7', '-v, --version', 'Output the version number')
     .helpOption('-h, --help', 'Display help for a command');
 
 // subcommands
