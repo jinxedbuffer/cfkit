@@ -54,24 +54,24 @@ This will display a list of commands and their descriptions.
 
 ### Contests
 
-Use the `contest` command to view available contests.
+Use the `contest` or `c` command to view available contests.
 
 ```shell
-cf contest [options]
+cf contest|c [options]
 ```
 
-**Options:**
+**Options**
 
-|        Option         | Description                                            |
-|:---------------------:|:-------------------------------------------------------|
-|    `-i, --id <id>`    | Show details of a contest by its ID.                   |
-| `-s, --search <name>` | Search for a contest by its name.                      |
-|   `-u, --upcoming`    | Show upcoming contests.                                |
-|    `-a, --active`     | Show active contests.                                  |
-| `-l, --limit <limit>` | Limit the number of contests to show (default is 100). |
-|      `-g, --gym`      | Show only gym contests.                                |
+|        Option         | Description                                              |
+|:---------------------:|:---------------------------------------------------------|
+|    `-i, --id <id>`    | Show details of a contest by its ID.                     |
+| `-s, --search <name>` | Search for a contest by its name.                        |
+|   `-u, --upcoming`    | Show upcoming contests.                                  |
+|    `-a, --active`     | Show active contests.                                    |
+| `-l, --limit <limit>` | Limit the number of contests to show (default is `100`). |
+|      `-g, --gym`      | Show only gym contests.                                  |
 
-**Example:**
+**Example**
 
 - Show details of a contest by ID:
 
@@ -93,24 +93,24 @@ cf contest -s "round 993"
 
 ### Problems
 
-Use the `problem` command to view problems from the problem set.
+Use the `problem` or `p` command to view problems from the problem set.
 
 ```shell
-cf problem [options]
+cf problem|p [options]
 ```
 
-**Options:**
+**Options**
 
-|         Option          | Description                                           |
-|:-----------------------:|:------------------------------------------------------|
-|    `-R, --randomize`    | Randomize the list of problems.                       |
-|  `-s, --search <name>`  | Search for a problem by its name.                     |
-|  `-c, --contest <id>`   | Show problems from a specific contest.                |
-|  `-l, --limit <limit>`  | Limit the number of problems to show (default is 15). |
-| `-r, --rating <rating>` | Set a rating filter.                                  |
-|   `-t, --tags <tags>`   | Set tags filter (comma-separated tags).               |
+|         Option          | Description                                             |
+|:-----------------------:|:--------------------------------------------------------|
+|    `-R, --randomize`    | Randomize the list of problems.                         |
+|  `-s, --search <name>`  | Search for a problem by its name.                       |
+|  `-c, --contest <id>`   | Show problems from a specific contest.                  |
+|  `-l, --limit <limit>`  | Limit the number of problems to show (default is `15`). |
+| `-r, --rating <rating>` | Set a rating filter.                                    |
+|   `-t, --tags <tags>`   | Set tags filter (comma-separated tags).                 |
 
-**Example:**
+**Example**
 
 - Show 10 problems with rating equal to 1500:
 
@@ -130,12 +130,46 @@ cf problem -s "queen"
 cf problem -t "tree"
 ```
 
-### Blogs
+### Judge
 
-Use the `blog` command to view blogs.
+Use the `judge` or `j` command to judge code against test cases.
+
+**Note: Currently only C++ is supported.**
 
 ```shell
-cf blog [options]
+cf judge|j [options]
+```
+
+**Options:**
+
+|        Option         |                    Description                    |
+|:---------------------:|:-------------------------------------------------:|
+| `-i, --input <file>`  |  Relative path to input file (default: `in.txt`)  |
+| `-o, --output <file>` | Relative path to output file (default: `out.txt`) |
+|  `-c, --code <file>`  | Relative path to code file (default: `main.cpp`). |
+
+**Example**
+
+```shell
+cf judge
+```
+
+### Generate
+
+Use the `generate` or `g` command to generate input, output, and code files.
+
+```shell
+cf generate|g
+```
+
+This will generate `in.txt`, `out.txt`, and `main.cpp` files in your **current working directory**.
+
+### Blogs
+
+Use the `blog` or `b` command to view blogs.
+
+```shell
+cf blog|b [options]
 ```
 
 **Options:**
@@ -154,10 +188,10 @@ cf blog -u MikeMirzayanov
 
 ### Cache
 
-To delete all stored cache, use the `flush` command:
+To delete all stored cache, use the `flush` pr `f` command:
 
 ```shell
-cf flush
+cf flush|f
 ```
 
 This will clear the cache data from your system.

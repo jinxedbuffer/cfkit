@@ -1,7 +1,7 @@
 import ora from "ora";
 import {CACHE_TIMEOUT_MINUTES, getCache, setCache} from "../helpers/cache-manager.js";
 import {fetchJSONFromAPI} from "../api/request.js";
-import moment from "moment/moment.js";
+import moment from "moment";
 import inquirer from "inquirer";
 import Table from "cli-table3";
 import {consoleWidth, dataColMaxWidth, keyColMaxWidth} from "../helpers/terminal-utils.js";
