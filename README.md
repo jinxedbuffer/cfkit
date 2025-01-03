@@ -8,6 +8,28 @@ cfkit is a CLI tool for competitive programming leveraging Codeforces API.
 
 **Terminals tested on**: kitty, Konsole
 
+```shell
+
+ ▗▄▄▖▗▄▄▄▖▗▖ ▗▖▗▄▄▄▖▗▄▄▄▖
+▐▌   ▐▌   ▐▌▗▞▘  █    █
+▐▌   ▐▛▀▀▘▐▛▚▖   █    █
+▝▚▄▄▖▐▌   ▐▌ ▐▌▗▄█▄▖  █
+
+
+Options:
+  -v, --version        Output the version number
+  -h, --help           Display help for a command
+
+Commands:
+  contest|c [options]  Show available contests
+  problem|p [options]  Show problems from problemset
+  generate|g           Generate files (`in.txt`, `out.txt`, `main.cpp`)
+  judge|j [options]    Judge code against testcases
+  blog|b [options]     Show blog posts
+  upgrade|u            Upgrade cfkit
+  flush|f              Deletes all stored cache
+```
+
 ## Table of Contents
 
 - [Installation](#installation)
