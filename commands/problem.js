@@ -144,11 +144,11 @@ const printProblem = function (p, back) {
 
     table.push(
         [{colSpan: 2, hAlign: "center", content: `Problem # ${p.contestId}${p.index}`}],
-        ['\uf121  Name', p.name],
-        ['\uf437  Points', p.points ?? "N/A"],
-        ['\uf0e7  Rating', p.rating ?? "N/A"],
-        ['\udb80\udc04  Solved Count', p.solvedCount],
-        ['\uf292  Tags', p.tags.join(', ')],
+        ['Name', p.name],
+        ['Points', p.points ?? "N/A"],
+        ['Rating', p.rating ?? "N/A"],
+        ['Solved Count', p.solvedCount],
+        ['Tags', p.tags.join(', ')],
     );
 
     console.log(table.toString());
@@ -158,19 +158,19 @@ const printProblem = function (p, back) {
 const chooser = function (p, back) {
     const choices = [
         {
-            name: "\uf488 Open in browser",
+            name: "Open in browser",
             value: "browserOpen"
         },
         {
-            name: "\uf400 Contest",
+            name: "Contest",
             value: "contestDetails"
         },
         {
-            name: "\uf104 Back",
+            name: "Back",
             value: "back"
         },
         {
-            name: "\udb80\ude06 Exit",
+            name: "Exit",
             value: "exit"
         }
     ];

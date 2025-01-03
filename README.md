@@ -8,9 +8,6 @@ cfkit is a CLI tool for competitive programming leveraging Codeforces API.
 
 **Terminals tested on**: kitty, Konsole
 
-**If icons are not being rendered properly on your terminal, consider installing
-a [nerd font](https://www.nerdfonts.com/).**
-
 ## Table of Contents
 
 - [Installation](#installation)

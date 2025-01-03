@@ -29,7 +29,7 @@ export const contest = async function (cmd, back) {
             setCache((cmd.gym) ? 'contests-gym' : 'contests', contests);
         } catch (error) {
             spinner.fail(' Network Error: Failed to fetch contests');
-            console.error(error);
+            process.exit(1);
         }
     }
 
@@ -110,7 +110,10 @@ const displayContestMenu = function (cmd, contests) {
         }
     ])
         .then((answers) => {
-            printContest(cmd, answers.contest, () => displayContestMenu(cmd, contests));
+            printContest(cmd, answers.contest, () => {
+                    displayContestMenu(cmd, contests);
+                }
+            );
         })
         .catch((err) => {
             if (!err.message.includes('force closed')) {
@@ -135,31 +138,31 @@ const printContest = function (cmd, c, back) {
 
     if (cmd.gym) {
         table.push(
-            [{content: `\uf400 Contest # ${c.id}`, hAlign: "center", colSpan: 2}],
-            ['\ue780  Name', c.name],
-            ['\uf400  Type', c.type],
-            ['\uf058  Phase', c.phase],
-            ['\uf03a  Frozen', c.frozen ? "Yes" : "No"],
-            ['\udb81\udd1b  Duration', duration],
-            ['\udb81\udc6e  Start Time', startTime],
-            ['\udb80\udc04  Prepared By', c.preparedBy ?? "N/A"],
-            ['\ueb14  Website URL', c.websiteUrl ?? "N/A"],
-            ['\uf463  Difficulty', c.difficulty ?? "N/A"],
-            ['\udb81\udc74  Kind', c.kind ?? "N/A"],
-            ['\udb80\udd46  City', c.city ?? "N/A"],
-            ['\ued00  Region', c.icpcRegion ?? "N/A"],
-            ['\ueb01  Country', c.country ?? "N/A"],
-            ['\udb80\udced  Season', c.season ?? "N/A"],
+            [{content: `Contest # ${c.id}`, hAlign: "center", colSpan: 2}],
+            ['Name', c.name],
+            ['Type', c.type],
+            ['Phase', c.phase],
+            ['Frozen', c.frozen ? "Yes" : "No"],
+            ['Duration', duration],
+            ['Start Time', startTime],
+            ['Prepared By', c.preparedBy ?? "N/A"],
+            ['Website URL', c.websiteUrl ?? "N/A"],
+            ['Difficulty', c.difficulty ?? "N/A"],
+            ['Kind', c.kind ?? "N/A"],
+            ['City', c.city ?? "N/A"],
+            ['Region', c.icpcRegion ?? "N/A"],
+            ['Country', c.country ?? "N/A"],
+            ['Season', c.season ?? "N/A"],
         );
     } else {
         table.push(
             [{content: `Contest # ${c.id}`, hAlign: "center", colSpan: 2}],
-            ['\ue780  Name', c.name],
-            ['\uf058  Phase', c.phase],
-            ['\uf03a  Frozen', c.frozen ? "Yes" : "No"],
-            ['\udb81\udd1b  Duration', duration],
-            ['\udb81\udc6e  Start Time', startTime],
-            ['\ueb14  Link', link]
+            ['Name', c.name],
+            ['Phase', c.phase],
+            ['Frozen', c.frozen ? "Yes" : "No"],
+            ['Duration', duration],
+            ['Start Time', startTime],
+            ['Link', link],
         );
     }
     console.log(table.toString());
@@ -170,20 +173,20 @@ const chooser = function (cmd, c, back, link) {
     let choices = [
         ...(link ? [
             {
-                name: "\uf488 Open in browser",
+                name: "Open in browser",
                 value: "browserOpen"
             }
         ] : []),
         {
-            name: "\ueae9 Problemset",
+            name: "Problemset",
             value: "contestProblems"
         },
         {
-            name: "\uf104 Back",
+            name: "Back",
             value: "back"
         },
         {
-            name: "\udb80\ude06 Exit",
+            name: "Exit",
             value: "exit"
         }
     ];
