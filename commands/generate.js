@@ -3,10 +3,10 @@ import ora from "ora";
 
 export const generate = function () {
     const currentDir = process.cwd();
-    const inputFile = `${currentDir}/${cmd.input}`;
-    const outputFile = `${currentDir}/${cmd.output}`;
-    const codeFile = `${currentDir}/${cmd.code}`;
-    
+    const inputFile = `${currentDir}/in.txt`;
+    const outputFile = `${currentDir}/out.txt`;
+    const codeFile = `${currentDir}/main.cpp`;
+
     const spinner = ora('Generating files...').start();
 
     try {
