@@ -40,9 +40,9 @@ cf upgrade
 
 ## Usage
 
-Once installed, you can use the cf command in your terminal. Here's an overview of how to use the available commands:
+Once installed, you can use the `cf` command in your terminal. Here's an overview of how to use the available commands:
 
-### 1. Display Available Commands
+### Help
 
 To see the available commands, run:
 
@@ -52,7 +52,7 @@ cf -h
 
 This will display a list of commands and their descriptions.
 
-### 2. Show Available Contests
+### Contests
 
 Use the `contest` command to view available contests.
 
@@ -62,12 +62,14 @@ cf contest [options]
 
 **Options:**
 
-- `-i, --id <id>`: Show details of a contest by its ID.
-- `-s, --search <name>`: Search for a contest by its name.
-- `-u, --upcoming`: Show upcoming contests.
-- `-a, --active`: Show active contests.
-- `-l, --limit <limit>`: Limit the number of contests to show (default is 100).
-- `-g, --gym`: Show only gym contests.
+|        Option         | Description                                            |
+|:---------------------:|:-------------------------------------------------------|
+|    `-i, --id <id>`    | Show details of a contest by its ID.                   |
+| `-s, --search <name>` | Search for a contest by its name.                      |
+|   `-u, --upcoming`    | Show upcoming contests.                                |
+|    `-a, --active`     | Show active contests.                                  |
+| `-l, --limit <limit>` | Limit the number of contests to show (default is 100). |
+|      `-g, --gym`      | Show only gym contests.                                |
 
 **Example:**
 
@@ -86,10 +88,10 @@ cf contest -u
 - Search for a contest by name:
 
 ```shell
-cf contest -s "Codeforces Round"
+cf contest -s "round 993"
 ```
 
-### 3. Show Problems from Problemset
+### Problems
 
 Use the `problem` command to view problems from the problem set.
 
@@ -99,12 +101,14 @@ cf problem [options]
 
 **Options:**
 
-- `-R, --randomize`: Randomize the list of problems.
-- `-s, --search <name>`: Search for a problem by its name.
-- `-c, --contest <id>`: Show problems from a specific contest.
-- `-l, --limit <limit>`: Limit the number of problems to show (default is 15).
-- `-r, --rating <rating>`: Set a rating filter.
-- `-t, --tags <tags>`: Set tags filter (comma-separated tags).
+|         Option          | Description                                           |
+|:-----------------------:|:------------------------------------------------------|
+|    `-R, --randomize`    | Randomize the list of problems.                       |
+|  `-s, --search <name>`  | Search for a problem by its name.                     |
+|  `-c, --contest <id>`   | Show problems from a specific contest.                |
+|  `-l, --limit <limit>`  | Limit the number of problems to show (default is 15). |
+| `-r, --rating <rating>` | Set a rating filter.                                  |
+|   `-t, --tags <tags>`   | Set tags filter (comma-separated tags).               |
 
 **Example:**
 
@@ -126,7 +130,29 @@ cf problem -s "queen"
 cf problem -t "tree"
 ```
 
-### 4. Delete All Stored Cache
+### Blogs
+
+Use the `blog` command to view blogs.
+
+```shell
+cf blog [options]
+```
+
+**Options:**
+
+|        Option         | Description             |
+|:---------------------:|:------------------------|
+| `-u, --user <handle>` | Show blog posts by user |
+
+**Example:**
+
+- Show blogs of an user:
+
+```shell
+cf blog -u MikeMirzayanov
+```
+
+### Cache
 
 To delete all stored cache, use the `flush` command:
 
