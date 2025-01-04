@@ -17,7 +17,7 @@ const logo =
     "| |    |  __| |  <   | |    | |\n" +
     "| |____| |    | . \\ _| |_   | |\n" +
     " \\_____|_|    |_|\\_\\_____|  |_|\n\n" +
-    "If you enjoy this software, give a star:\n" +
+    "If you enjoy this software, give it a star:\n" +
     "https://github.com/jinxedbuffer/cfkit";
 
 
