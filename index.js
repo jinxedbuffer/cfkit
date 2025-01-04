@@ -11,10 +11,15 @@ import {judge} from "./commands/judge.js";
 import {generate} from "./commands/generate.js";
 
 const logo =
-    ' ▗▄▄▖▗▄▄▄▖▗▖ ▗▖▗▄▄▄▖▗▄▄▄▖\n' +
-    '▐▌   ▐▌   ▐▌▗▞▘  █    █  \n' +
-    '▐▌   ▐▛▀▀▘▐▛▚▖   █    █  \n' +
-    '▝▚▄▄▖▐▌   ▐▌ ▐▌▗▄█▄▖  █  \n';
+    "  _____ ______ _  _______ _______\n" +
+    "/ ____|  ____| | / /_   _|__   __|\n" +
+    "| |    | |__  | ' /  | |    | |\n" +
+    "| |    |  __| |  <   | |    | |\n" +
+    "| |____| |    | . \\ _| |_   | |\n" +
+    " \\_____|_|    |_|\\_\\_____|  |_|\n\n" +
+    "If you enjoy this software, give a star:\n" +
+    "https://github.com/jinxedbuffer/cfkit";
+
 
 // default action
 program
@@ -28,7 +33,7 @@ program
     .name('cf')
     .description(logo)
     .usage('[command] [options]')
-    .version('0.1.7', '-v, --version', 'Output the version number')
+    .version('0.1.8', '-v, --version', 'Output the version number')
     .helpOption('-h, --help', 'Display help for a command');
 
 // subcommands
@@ -61,6 +66,8 @@ program
     .command('generate')
     .alias('g')
     .description('Generate files (`in.txt`, `out.txt`, `main.cpp`)')
+    .option('-p, --problem <id>', 'Generate files for a problem')
+    .option('-c, --contest <id>', 'Generates files for each problem in contest')
     .action(generate);
 
 program

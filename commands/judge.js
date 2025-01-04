@@ -1,4 +1,4 @@
-import {compare, compile, run} from "../helpers/judge-utils.js";
+import {compile, run} from "../helpers/judge-utils.js";
 
 export const judge = async function (cmd) {
     const currentDir = process.cwd();
@@ -8,9 +8,6 @@ export const judge = async function (cmd) {
 
     const executable = await compile(codeFile);
     if (executable) {
-        const actualOutput = await run(executable, inputFile);
-        if (actualOutput) {
-            await compare(actualOutput, outputFile)
-        }
+        await run(executable, inputFile, outputFile);
     }
 }

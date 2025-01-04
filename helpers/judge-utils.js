@@ -2,17 +2,20 @@ import {exec} from 'child_process';
 import fs from 'fs/promises';
 import ora from "ora";
 import {CACHE_DIR} from "./cache-manager.js";
+import Table from "cli-table3";
+
+export const SEPARATOR = "---\n";
 
 export async function compile(codePath) {
-    const spinner = ora('Compiling code...').start();
+    const spinner = ora('Compiling code').start();
     try {
         await fs.mkdir(CACHE_DIR, {recursive: true});
 
-        const executablePath = `${CACHE_DIR}/exec`;
+        const executablePath = `${CACHE_DIR}/bin`;
         await new Promise((resolve, reject) => {
             exec(`g++ ${codePath} -o ${executablePath}`, (error, stdout, stderr) => {
                 if (error) {
-                    reject(`Compilation failed: ${stderr}`);
+                    reject(error);
                 } else {
                     resolve();
                 }
@@ -21,52 +24,76 @@ export async function compile(codePath) {
 
         spinner.succeed('Compilation successful');
         return executablePath;
-    } catch (error) {
-        spinner.fail(`Compilation failed: ${error}`);
+    } catch (e) {
+        spinner.fail(`Compilation failed`);
+        console.log(e.message);
         return null;
     }
 }
 
-export async function run(executablePath, inputPath) {
-    const spinner = ora('Executing code...').start();
+export async function run(executablePath, inputPath, expectedPath) {
+    const spinner = ora('Executing code').start();
     try {
-        const input = await fs.readFile(inputPath, 'utf8');
+        const inputFile = await fs.readFile(inputPath, 'utf8');
+        const expectedFile = await fs.readFile(expectedPath, 'utf8');
 
-        const output = await new Promise((resolve, reject) => {
-            const process = exec(executablePath);
-            process.stdin.write(input);
-            process.stdin.end();
+        const inputCases = inputFile.split(SEPARATOR).map((s) => s.trim());
+        const expectedCases = expectedFile.split(SEPARATOR).map((s) => s.trim());
 
-            process.stdout.on('data', (data) => {
-                resolve(data.toString());
-            });
-
-            process.stderr.on('data', (data) => {
-                reject(`Execution failed: ${data.toString()}`);
-            });
-        });
-
-        spinner.succeed('Execution successful');
-        return output.trim();
-    } catch (error) {
-        spinner.fail(`Execution failed: ${error}`);
-        return null;
-    }
-}
-
-export async function compare(actualOutput, expectedFile) {
-    const spinner = ora('Comparing outputs...').start();
-    try {
-        const expectedOutput = await fs.readFile(expectedFile, 'utf8');
-
-        if (actualOutput === expectedOutput.trim()) {
-            spinner.succeed('Test passed');
-        } else {
-            spinner.fail('Test failed');
-            console.log(`\nExpected:\n${expectedOutput}`);
-            console.log(`Got:\n${actualOutput}`);
+        if (inputCases.length !== expectedCases.length) {
+            spinner.fail("Number of input cases and expected output cases do not match");
+            return;
         }
-    } catch (error) {
-        spinner.fail(`Error reading expected file: ${error}`);
+
+        for (let i = 0; i < inputCases.length; i++) {
+            const input = inputCases[i];
+            const expectedOutput = expectedCases[i];
+
+            const startTime = performance.now();
+
+            const actualOutput = await new Promise((resolve, reject) => {
+                const process = exec(executablePath);
+                process.stdin.write(input);
+                process.stdin.end();
+
+                let output = '';
+                process.stdout.on('data', (data) => {
+                    output += data.toString();
+                });
+
+                process.stderr.on('data', (data) => {
+                    reject(data.toString());
+                });
+
+                process.on('close', () => {
+                    resolve(output.trim());
+                });
+            });
+
+            const endTime = performance.now();
+            const executionTime = endTime - startTime;
+
+            spinner.succeed(`Execution for testcase ${i + 1} successful (took ${executionTime.toFixed(2)} ms)`);
+
+            if (actualOutput === expectedOutput) {
+                console.log(`Testcase ${i + 1}: [+] Passed`);
+            } else {
+                console.log(`Testcase ${i + 1}: [x] Failed`);
+                createDifferenceTable(expectedOutput, actualOutput);
+            }
+        }
+
+    } catch (e) {
+        spinner.fail(`Execution failed`);
+        console.error(e);
     }
+}
+
+const createDifferenceTable = function (expected, got) {
+    const table = new Table({
+        head: [{hAlign: "center", content: 'Expected'}, {hAlign: "center", content: 'Got'}],
+        wordWrap: true
+    });
+    table.push([expected, got]);
+    console.log(table.toString());
 }

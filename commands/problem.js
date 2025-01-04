@@ -6,9 +6,10 @@ import inquirer from "inquirer";
 import {consoleWidth, dataColMaxWidth, keyColMaxWidth} from "../helpers/terminal-utils.js";
 import {contest} from "./contest.js";
 import open from "open";
+import {generate} from "./generate.js";
 
 export const problem = async function (cmd, back) {
-    const spinner = ora('Fetching problems...').start();
+    const spinner = ora('Fetching problems').start();
     const url = 'https://codeforces.com/api/problemset.problems';
     const _cache = getCache('problems');
 
@@ -27,9 +28,10 @@ export const problem = async function (cmd, back) {
             }
 
             setCache('problems', problems);
-        } catch (error) {
-            spinner.fail(' Network Error: Failed to fetch problems');
-            process.exit(1);
+        } catch (e) {
+            spinner.fail('Network Error: Failed to fetch problems');
+            console.error(e);
+            return;
         }
     }
 
@@ -68,32 +70,33 @@ export const problem = async function (cmd, back) {
     }
 
     if (problems.length === 0) {
-        spinner.fail(' No problems found');
-    } else {
-        if (cmd.randomize) {
-            let randomProblems = [];
-
-            if (limit >= problems.length) {
-                randomProblems = problems;
-            } else {
-                const duplicateChecker = [];
-                for (let i = 0; i < limit; i++) {
-                    let randomIndex = Math.floor(Math.random() * problems.length);
-                    while (duplicateChecker.includes(randomIndex)) {
-                        randomIndex = Math.floor(Math.random() * problems.length);
-                    }
-                    duplicateChecker.push(randomIndex);
-                    randomProblems.push(problems[randomIndex]);
-                }
-            }
-            problems = randomProblems;
-        } else {
-            problems = problems.slice(0, cmd.limit);
-        }
-
-        spinner.stop();
-        displayProblemsMenu(problems, back);
+        spinner.fail('No problems found');
+        return;
     }
+
+    if (cmd.randomize) {
+        let randomProblems = [];
+
+        if (limit >= problems.length) {
+            randomProblems = problems;
+        } else {
+            const duplicateChecker = [];
+            for (let i = 0; i < limit; i++) {
+                let randomIndex = Math.floor(Math.random() * problems.length);
+                while (duplicateChecker.includes(randomIndex)) {
+                    randomIndex = Math.floor(Math.random() * problems.length);
+                }
+                duplicateChecker.push(randomIndex);
+                randomProblems.push(problems[randomIndex]);
+            }
+        }
+        problems = randomProblems;
+    } else {
+        problems = problems.slice(0, cmd.limit);
+    }
+
+    spinner.stop();
+    displayProblemsMenu(problems, back);
 }
 
 const displayProblemsMenu = function (problems, back) {
@@ -120,7 +123,7 @@ const displayProblemsMenu = function (problems, back) {
         {
             type: 'list',
             name: 'problem',
-            message: ' Choose a problem',
+            message: ' Select a problem',
             choices: choices,
         }
     ])
@@ -129,9 +132,9 @@ const displayProblemsMenu = function (problems, back) {
                 displayProblemsMenu(problems, back);
             });
         })
-        .catch((err) => {
-            if (!err.message.includes('force closed')) {
-                console.log(err);
+        .catch((e) => {
+            if (!e.message.includes('force closed')) {
+                console.log(e);
             }
         });
 }
@@ -162,7 +165,11 @@ const chooser = function (p, back) {
             value: "browserOpen"
         },
         {
-            name: "Contest",
+            name: "Generate files for this problem",
+            value: "generateFiles"
+        },
+        {
+            name: "See contest",
             value: "contestDetails"
         },
         {
@@ -190,9 +197,16 @@ const chooser = function (p, back) {
                             id: p.contestId,
                         },
                         () => printProblem(p, back)
-                    ).catch((err) => {
-                        console.log(err);
+                    ).catch((e) => {
+                        console.error(e);
                     });
+                    break;
+                }
+
+                case 'generateFiles': {
+                    generate({
+                        problem: `${p.contestId}${p.index}`,
+                    }).catch((e) => console.error(e));
                     break;
                 }
 
@@ -204,8 +218,8 @@ const chooser = function (p, back) {
                 case 'browserOpen': {
                     open(`https://codeforces.com/problemset/problem/${p.contestId}/${p.index}`)
                         .then(() => chooser(p, back))
-                        .catch((err) => {
-                            console.log(err);
+                        .catch((e) => {
+                            console.error(e);
                         });
                     break;
                 }
@@ -214,9 +228,9 @@ const chooser = function (p, back) {
                     process.exit(0);
                 }
             }
-        }).catch(err => {
-        if (!err.message.includes('force closed')) {
-            console.log(err);
+        }).catch(e => {
+        if (!e.message.includes('force closed')) {
+            console.error(e);
         }
     });
 }

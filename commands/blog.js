@@ -8,7 +8,7 @@ import {consoleWidth, dataColMaxWidth, keyColMaxWidth} from "../helpers/terminal
 import open from "open";
 
 export const blog = async function (cmd) {
-    const spinner = ora('Fetching blogs...').start();
+    const spinner = ora('Fetching blogs').start();
     const url = `https://codeforces.com/api/user.blogEntries?handle=${cmd.user}`;
     let blogs;
     const _cache = getCache(`blogs-${cmd.user}`);
@@ -20,14 +20,15 @@ export const blog = async function (cmd) {
             const res = await fetchJSONFromAPI(url);
             blogs = res.result;
             setCache(`blogs-${cmd.user}`, blogs);
-        } catch (error) {
-            spinner.fail(' Network Error: Failed to fetch blogs');
-            process.exit(1);
+        } catch (e) {
+            spinner.fail('Failed to fetch blogs');
+            console.error(e);
+            return;
         }
     }
 
     if (blogs.length === 0) {
-        spinner.fail(` No blogs found`);
+        spinner.fail(`No blogs found`);
     } else {
         spinner.stop();
         displayBlogsMenu(cmd, blogs);
@@ -60,9 +61,9 @@ const displayBlogsMenu = function (cmd, blogs) {
         .then((answers) => {
             printBlog(answers.blog, () => displayBlogsMenu(cmd, blogs));
         })
-        .catch((err) => {
-            if (!err.message.includes('force closed')) {
-                console.log(err)
+        .catch((e) => {
+            if (!e.message.includes('force closed')) {
+                console.error(e);
             }
         });
 }
@@ -119,8 +120,8 @@ const chooser = function (b, back) {
                 case 'browserOpen': {
                     open(`https://codeforces.com/blog/entry/${b.id}`)
                         .then(() => chooser(b, back))
-                        .catch((err) => {
-                            console.log(err);
+                        .catch((e) => {
+                            console.error(e);
                         });
                     break;
                 }
@@ -134,9 +135,9 @@ const chooser = function (b, back) {
                     process.exit(0);
                 }
             }
-        }).catch(err => {
-        if (!err.message.includes('force closed')) {
-            console.log(err);
+        }).catch(e => {
+        if (!e.message.includes('force closed')) {
+            console.error(e);
         }
     });
 }

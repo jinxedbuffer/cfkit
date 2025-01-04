@@ -8,9 +8,10 @@ import inquirer from "inquirer";
 import {consoleWidth, dataColMaxWidth, keyColMaxWidth} from "../helpers/terminal-utils.js";
 import open from "open";
 import {problem} from "./problem.js";
+import {generate} from "./generate.js";
 
 export const contest = async function (cmd, back) {
-    const spinner = ora('Fetching contests...').start();
+    const spinner = ora('Fetching contests').start();
     const url = 'https://codeforces.com/api/contest.list' + ((cmd.gym) ? '?gym=true' : '');
     let contests, _cache;
 
@@ -28,8 +29,9 @@ export const contest = async function (cmd, back) {
             contests = res.result;
             setCache((cmd.gym) ? 'contests-gym' : 'contests', contests);
         } catch (error) {
-            spinner.fail(' Network Error: Failed to fetch contests');
-            process.exit(1);
+            spinner.fail('Failed to fetch contests');
+            console.error(error);
+            return;
         }
     }
 
@@ -75,15 +77,17 @@ export const contest = async function (cmd, back) {
     }
 
     if (contests.length === 0) {
-        spinner.fail(` No contests found`);
-    } else {
-        spinner.stop();
-        if (cmd.id) {
-            printContest(cmd, contests[0], back);
-        } else {
-            displayContestMenu(cmd, contests);
-        }
+        spinner.fail('No contests found');
+        return;
     }
+
+    spinner.stop();
+    if (cmd.id) {
+        printContest(cmd, contests[0], back);
+    } else {
+        displayContestMenu(cmd, contests);
+    }
+
 }
 
 const displayContestMenu = function (cmd, contests) {
@@ -105,7 +109,7 @@ const displayContestMenu = function (cmd, contests) {
         {
             type: 'list',
             name: 'contest',
-            message: ' Choose a contest',
+            message: 'Select a contest',
             choices: choices,
         }
     ])
@@ -115,9 +119,9 @@ const displayContestMenu = function (cmd, contests) {
                 }
             );
         })
-        .catch((err) => {
-            if (!err.message.includes('force closed')) {
-                console.log(err)
+        .catch((e) => {
+            if (!e.message.includes('force closed')) {
+                console.error(e);
             }
         });
 }
@@ -178,7 +182,11 @@ const chooser = function (cmd, c, back, link) {
             }
         ] : []),
         {
-            name: "Problemset",
+            name: "Generate files for this contest",
+            value: "generateFiles"
+        },
+        {
+            name: "See problems",
             value: "contestProblems"
         },
         {
@@ -196,7 +204,7 @@ const chooser = function (cmd, c, back, link) {
             {
                 type: 'list',
                 name: 'options',
-                message: ' Choose an option',
+                message: 'Choose an option',
                 choices: choices,
             },
         ])
@@ -206,7 +214,14 @@ const chooser = function (cmd, c, back, link) {
                     problem({
                         contest: c.id,
                     }, () => displayContestMenu(cmd, c, back))
-                        .catch((err) => console.log(err));
+                        .catch((e) => console.error(e));
+                    break;
+                }
+
+                case 'generateFiles': {
+                    generate({
+                        contest: c.id,
+                    }).catch((e) => console.error(e));
                     break;
                 }
 
@@ -218,8 +233,8 @@ const chooser = function (cmd, c, back, link) {
                 case 'browserOpen': {
                     open(link)
                         .then(() => chooser(cmd, c, back, link))
-                        .catch((err) => {
-                            console.log(err);
+                        .catch((e) => {
+                            console.error(e);
                         });
                     break;
                 }
@@ -228,9 +243,9 @@ const chooser = function (cmd, c, back, link) {
                     process.exit(0);
                 }
             }
-        }).catch(err => {
-        if (!err.message.includes('force closed')) {
-            console.log(err);
+        }).catch(e => {
+        if (!e.message.includes('force closed')) {
+            console.log(e);
         }
     });
 }

@@ -7,7 +7,7 @@ export const CACHE_TIMEOUT_MINUTES = 60;
 
 export const setCache = function (key, value) {
     if (!fs.existsSync(CACHE_DIR)) {
-        fs.mkdirSync(CACHE_DIR);
+        fs.mkdirSync(CACHE_DIR, {recursive: true});
     }
     const CACHE_FILE = path.join(CACHE_DIR, key + '.json');
 
