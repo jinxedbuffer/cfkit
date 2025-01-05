@@ -42,7 +42,7 @@ program
     .name('cf')
     .description(logo)
     .usage('[command] [options]')
-    .version('0.1.10', '-v, --version', 'Output the version number')
+    .version('0.1.11', '-v, --version', 'Output the version number')
     .helpOption('-h, --help', 'Display help for a command');
 
 // subcommands
