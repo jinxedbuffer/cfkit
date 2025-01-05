@@ -35,6 +35,19 @@ export const problem = async function (cmd, back) {
         }
     }
 
+    if (cmd.id) {
+        const match = cmd.id.match(/^(\d+)([A-Z]\d*)$/);
+        if (!match) {
+            spinner.fail(`Invalid problem ID`);
+            return;
+        }
+        const contestId = match[1];
+        const problemIndex = match[2];
+        problems = problems.filter(problem =>
+            (problem.contestId === parseInt(contestId)) && (problem.index === problemIndex)
+        )
+    }
+
     const limit = cmd.limit ? parseInt(cmd.limit) : 10;
     const rating = cmd.rating ? parseInt(cmd.rating) : null;
     const contest = cmd.contest ? parseInt(cmd.contest) : null;
@@ -96,7 +109,13 @@ export const problem = async function (cmd, back) {
     }
 
     spinner.stop();
-    displayProblemsMenu(problems, back);
+    
+    if (cmd.id) {
+        printProblem(problems[0], back);
+    } else {
+        displayProblemsMenu(problems, back);
+    }
+
 }
 
 const displayProblemsMenu = function (problems, back) {

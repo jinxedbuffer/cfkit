@@ -9,10 +9,15 @@ import {upgrade} from "./commands/upgrade.js";
 import {blog} from "./commands/blog.js";
 import {judge} from "./commands/judge.js";
 import {generate} from "./commands/generate.js";
-import notifier from "update-notifier";
+import updateNotifier from "update-notifier";
 import packageJson from './package.json' with {type: 'json'};
 
-notifier({pkg: packageJson}).notify();
+const notifier = updateNotifier({pkg: packageJson});
+
+if (notifier.update) {
+    console.log(`[!] Update available: ${notifier.update.latest}`);
+    console.log("[!] Run `cf upgrade` to upgrade to latest version");
+}
 
 const logo =
     "  _____ ______ _  _______ _______\n" +
@@ -37,7 +42,7 @@ program
     .name('cf')
     .description(logo)
     .usage('[command] [options]')
-    .version('0.1.9', '-v, --version', 'Output the version number')
+    .version('0.1.10', '-v, --version', 'Output the version number')
     .helpOption('-h, --help', 'Display help for a command');
 
 // subcommands
@@ -59,6 +64,7 @@ program
     .alias('p')
     .description('Show problems from problemset')
     .option('-R, --randomize', 'Randomize problems')
+    .option('-i, --id <id>', "Search for a problem by its ID")
     .option('-s, --search <name>', 'Search for a problem by its name')
     .option('-c, --contest <id>', 'Show problems of a specific contest')
     .option('-l, --limit <limit>', 'Limit how many problems to show', '15')

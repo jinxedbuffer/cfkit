@@ -59,7 +59,7 @@ Once installed, you can use the `cf` command in your terminal. Here's an overvie
 
 ### Help
 
-To see the available commands, run:
+_To see the available commands, run:_
 
 ```shell
 cf -h
@@ -69,7 +69,7 @@ This will display a list of commands and their descriptions.
 
 ### Contests
 
-Use the `contest` or `c` command to view available contests.
+_Use the `contest` or `c` command to view available contests._
 
 ```shell
 cf contest|c [options]
@@ -88,10 +88,11 @@ cf contest|c [options]
 
 **Example**
 
-- Show details of a contest by ID:
+- _Show details of a contest by ID:_
 
 ```text
 $ cf contest -i 1780
+
 ┌──────────────────────────────────────────────────────────┐
 │                      Contest # 1780                      │
 ├─────────────────┬────────────────────────────────────────┤
@@ -115,27 +116,29 @@ $ cf contest -i 1780
   Exit
 ```
 
-- Show upcoming contests:
+- _Show upcoming contests:_
 
 ```text
 $ cf contest -u
+
 ? Select a contest (Use arrow keys)
 ❯ # 2056 │ in 13 days │ Codeforces Round (Div. 2)
   # 2055 │ in 8 days  │ Codeforces Round (Div. 2)
   # 2057 │ in 3 hours │ Hello 2025
 ```
 
-- Search for a contest by name:
+- _Search for a contest by name:_
 
 ```text
 $ cf contest -s "round 993"
+
 ? Select a contest (Use arrow keys)
 ❯ # 2044 │ 20 days ago │ Codeforces Round 993 (Div. 4)
 ```
 
 ### Problems
 
-Use the `problem` or `p` command to view problems from the problem set.
+_Use the `problem` or `p` command to view problems from the problem set._
 
 ```shell
 cf problem|p [options]
@@ -146,6 +149,7 @@ cf problem|p [options]
 |         Option          | Description                                             |
 |:-----------------------:|:--------------------------------------------------------|
 |    `-R, --randomize`    | Randomize the list of problems.                         |
+|     `-i, --id <id>`     | Search for a problem by its ID.                         |
 |  `-s, --search <name>`  | Search for a problem by its name.                       |
 |  `-c, --contest <id>`   | Show problems from a specific contest.                  |
 |  `-l, --limit <limit>`  | Limit the number of problems to show (default is `15`). |
@@ -154,10 +158,11 @@ cf problem|p [options]
 
 **Example**
 
-- Show 10 problems with rating equal to 1500:
+- _Show 10 problems with rating equal to 1500:_
 
 ```text
 $ cf problem -r 1500 -l 10
+
 ?  Select a problem
 ❯ # 2050E  │ Three Strings                           │ dp, implementation, strings
   # 2049C  │ MEX Cycle                               │ brute force, constructive algorithms, greedy, implementation
@@ -169,10 +174,11 @@ $ cf problem -r 1500 -l 10
 (Use arrow keys to reveal more choices)
 ```
 
-- Search for problems by name:
+- _Search for problems by name:_
 
 ```text
 $ cf problem -s "queen"
+
 ?  Select a problem (Use arrow keys)
 ❯ # 1667C │ Half Queen Cover                            │ constructive algorithms, math
   # 1143C │ Queen                                       │ dfs and similar, trees
@@ -181,10 +187,11 @@ $ cf problem -s "queen"
   # 131E  │ Yet Another Task with Queens                │ sortings
 ```
 
-- Search for problems by tags:
+- _Search for problems by tags:_
 
 ```text
 $ cf problem -t "tree"
+
 ?  Select a problem
 ❯ # 2053E  │ Resourceful Caterpillar Sequence    │ dfs and similar, dp, games, graphs, greedy, trees
   # 2052M  │ Managing Cluster                    │ dp, graphs, math, trees
@@ -199,7 +206,7 @@ $ cf problem -t "tree"
 
 ### Generate
 
-Use the `generate` or `g` command to generate input, output, and code files.
+_Use the `generate` or `g` command to generate input, output, and code files._
 
 ```shell
 cf generate|g [options]
@@ -215,19 +222,21 @@ This will generate `in.txt`, `out.txt`, and `main.cpp` files in your **current w
 
 **Example**
 
-- Generate files for problem ID `2047B`
+- _Generate files for problem ID `2047B`_
 
 ```text
 $ cf generate -p 2047B
+
 ✔ Successfully generated files for problem # 2047B
 ````
 
 This will create files for problem ID `2047B` in a folder named `2047B` in the current working directory.
 
-- Generate files for all problems of contest ID `2047`
+- _Generate files for all problems of contest ID `2047`_
 
 ```text
 $ cf generate -c 2047
+
 ✔ Successfully generated files for problem # 2047A
 ✔ Successfully generated files for problem # 2047B
 ✔ Successfully generated files for problem # 2047C
@@ -257,11 +266,11 @@ working directory.
 .
 ```
 
-**Notes:** If both options are omitted, only blank files will be created. Use `-p` or `-c` to parse testcases as well.
+**Note:** If both options are omitted, only blank files will be created. Use `-p` or `-c` to parse testcases as well.
 
 ### Judge
 
-Use the `judge` or `j` command to judge code against test cases.
+_Use the `judge` or `j` command to judge code against test cases._
 
 **Note: Currently only C++ is supported.**
 
@@ -279,10 +288,11 @@ cf judge|j [options]
 
 **Example**
 
-- Judge `main.cpp` against testcase files (`in.txt` and `out.txt`)
+- _Judge `main.cpp` against testcase files (`in.txt` and `out.txt`)_
 
 ```text
 $ cf judge
+
 ✔ Compilation successful
 ✔ Execution for testcase 1 successful (took 5.10 ms)
 Testcase 1: [x] Failed
@@ -300,7 +310,7 @@ Testcase 1: [x] Failed
 
 ### Blogs
 
-Use the `blog` or `b` command to view blogs.
+_Use the `blog` or `b` command to view blogs._
 
 ```shell
 cf blog|b [options]
@@ -314,10 +324,11 @@ cf blog|b [options]
 
 **Example:**
 
-- Show blogs of an user:
+- _Show blogs of an user:_
 
 ```text
 $ cf blog -u MikeMirzayanov
+
 ?  Choose a blog
 ❯ # 137946 │ 6 days ago   │ New Year's Eve Update: Random Problems for Mashups
   # 137533 │ 9 days ago   │ MaraTON Challenge 1
@@ -331,7 +342,7 @@ $ cf blog -u MikeMirzayanov
 
 ### Cache
 
-To delete all stored cache, use the `flush` pr `f` command:
+_To delete all stored cache, use the `flush` pr `f` command:_
 
 ```shell
 cf flush|f
