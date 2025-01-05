@@ -7,12 +7,10 @@ let CODE_TEMPLATE;
 
 export const generate = async function (cmd) {
 
-    if (cmd.template) {
-        try {
-            CODE_TEMPLATE = fs.readFileSync(`${CURRENT_WORKING_DIR}/${cmd.template}`, 'utf8');
-        } catch (e) {
-            CODE_TEMPLATE = "";
-        }
+    try {
+        CODE_TEMPLATE = fs.readFileSync(`${CURRENT_WORKING_DIR}/${cmd.template}`, 'utf8');
+    } catch (e) {
+        CODE_TEMPLATE = "";
     }
 
     if (cmd.contest) {

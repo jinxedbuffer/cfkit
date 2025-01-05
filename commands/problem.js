@@ -109,7 +109,7 @@ export const problem = async function (cmd, back) {
     }
 
     spinner.stop();
-    
+
     if (cmd.id) {
         printProblem(problems[0], back);
     } else {
