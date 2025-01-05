@@ -9,8 +9,6 @@ cfkit is a CLI tool for competitive programming leveraging Codeforces API.
 **Terminals tested on**: kitty, Konsole
 
 ```text
-Usage: cf [command] [options]
-
   _____ ______ _  _______ _______
 / ____|  ____| | / /_   _|__   __|
 | |    | |__  | ' /  | |    | |
@@ -18,21 +16,8 @@ Usage: cf [command] [options]
 | |____| |    | . \ _| |_   | |
  \_____|_|    |_|\_\_____|  |_|
 
-If you enjoy this software, give a star:
+⭐ If you enjoy this software, give it a star:
 https://github.com/jinxedbuffer/cfkit
-
-Options:
-  -v, --version         Output the version number
-  -h, --help            Display help for a command
-
-Commands:
-  contest|c [options]   Show available contests
-  problem|p [options]   Show problems from problemset
-  generate|g [options]  Generate files (`in.txt`, `out.txt`, `main.cpp`)
-  judge|j [options]     Judge code against testcases
-  blog|b [options]      Show blog posts
-  upgrade|u             Upgrade cfkit
-  flush|f               Deletes all stored cache
 ```
 
 ## Table of Contents
@@ -197,6 +182,7 @@ $ cf problem -s "queen"
 
 ```text
 $ cf problem -t "tree"
+?  Select a problem
 ❯ # 2053E  │ Resourceful Caterpillar Sequence    │ dfs and similar, dp, games, graphs, greedy, trees
   # 2052M  │ Managing Cluster                    │ dp, graphs, math, trees
   # 2050G  │ Tree Destruction                    │ dfs and similar, dp, trees
@@ -205,6 +191,7 @@ $ cf problem -t "tree"
   # 2044G1 │ Medium Demon Problem (easy version) │ dfs and similar, graph matchings, graphs, implementation, trees
   # 2042E  │ Vertex Pairs                        │ binary search, brute force, data structures, dfs and similar, divide and c
 (Use arrow keys to reveal more choices)
+
 ```
 
 ### Generate
@@ -217,10 +204,11 @@ cf generate|g [options]
 
 This will generate `in.txt`, `out.txt`, and `main.cpp` files in your **current working directory**.
 
-|        Option        | Description                                  |
-|:--------------------:|:---------------------------------------------|
-| `-c, --contest <id>` | Generates files for each problem in contest. |
-| `-p, --problem <id>` | Generate files for a problem                 |
+|         Option          | Description                                                 |
+|:-----------------------:|:------------------------------------------------------------|
+|  `-c, --contest <id>`   | Generates files for each problem in contest.                |
+|  `-p, --problem <id>`   | Generate files for a problem                                |
+| `-t, --template <file>` | Placeholder to use for `main.cpp` (default: `template.cpp`) |
 
 **Example**
 

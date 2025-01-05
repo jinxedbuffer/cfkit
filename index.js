@@ -9,6 +9,10 @@ import {upgrade} from "./commands/upgrade.js";
 import {blog} from "./commands/blog.js";
 import {judge} from "./commands/judge.js";
 import {generate} from "./commands/generate.js";
+import notifier from "update-notifier";
+import packageJson from './package.json' with {type: 'json'};
+
+notifier({pkg: packageJson}).notify();
 
 const logo =
     "  _____ ______ _  _______ _______\n" +
@@ -17,7 +21,7 @@ const logo =
     "| |    |  __| |  <   | |    | |\n" +
     "| |____| |    | . \\ _| |_   | |\n" +
     " \\_____|_|    |_|\\_\\_____|  |_|\n\n" +
-    "If you enjoy this software, give it a star:\n" +
+    "⭐ If you enjoy this software, give it a star:\n" +
     "https://github.com/jinxedbuffer/cfkit";
 
 
@@ -33,7 +37,7 @@ program
     .name('cf')
     .description(logo)
     .usage('[command] [options]')
-    .version('0.1.8', '-v, --version', 'Output the version number')
+    .version('0.1.9', '-v, --version', 'Output the version number')
     .helpOption('-h, --help', 'Display help for a command');
 
 // subcommands
@@ -68,6 +72,7 @@ program
     .description('Generate files (`in.txt`, `out.txt`, `main.cpp`)')
     .option('-p, --problem <id>', 'Generate files for a problem')
     .option('-c, --contest <id>', 'Generates files for each problem in contest')
+    .option('-t, --template <file>', 'Template to use for `main.cpp`', 'template.cpp')
     .action(generate);
 
 program

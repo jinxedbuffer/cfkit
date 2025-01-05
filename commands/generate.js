@@ -3,7 +3,17 @@ import ora from "ora";
 import {CURRENT_WORKING_DIR, getContestProblemsIndices, getTestCases} from "../helpers/scraper-utils.js";
 import {SEPARATOR} from "../helpers/judge-utils.js";
 
+let CODE_TEMPLATE;
+
 export const generate = async function (cmd) {
+
+    if (cmd.template) {
+        try {
+            CODE_TEMPLATE = fs.readFileSync(`${CURRENT_WORKING_DIR}/${cmd.template}`, 'utf8');
+        } catch (e) {
+            CODE_TEMPLATE = "";
+        }
+    }
 
     if (cmd.contest) {
         try {
@@ -83,7 +93,7 @@ const generateProblemFiles = async function (problemId) {
         }
         fs.writeFileSync(inputFile, inputBuffer);
         fs.writeFileSync(outputFile, outputBuffer);
-        fs.writeFileSync(codeFile, '');
+        fs.writeFileSync(codeFile, CODE_TEMPLATE);
         spinner.succeed(`Successfully generated files for problem # ${problemId}`);
     } catch (e) {
         spinner.fail(`Failed to generate files for problem # ${problemId}`);
