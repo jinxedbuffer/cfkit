@@ -221,6 +221,7 @@ const chooser = function (cmd, c, back, link) {
                 case 'generateFiles': {
                     generate({
                         contest: c.id,
+                        template: "template.cpp"
                     }).catch((e) => console.error(e));
                     break;
                 }

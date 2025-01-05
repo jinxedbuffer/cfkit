@@ -225,6 +225,7 @@ const chooser = function (p, back) {
                 case 'generateFiles': {
                     generate({
                         problem: `${p.contestId}${p.index}`,
+                        template: "template.cpp"
                     }).catch((e) => console.error(e));
                     break;
                 }
