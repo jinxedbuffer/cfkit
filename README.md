@@ -4,6 +4,13 @@
 ![NPM Downloads](https://img.shields.io/npm/dw/%40jinxedbuffer%2Fcfkit)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/jinxedbuffer/cfkit)](https://github.com/jinxedbuffer/cfkit)
 
+cfkit is a CLI tool for competitive programming leveraging Codeforces API.
+
+**Terminals tested on**: kitty, Konsole
+
+**Fun fact**: I made this software so I can find random problems to solve everyday because I suck at competitive
+programming and want to get better at it.
+
 ```text
   _____ ______ _  _______ _______
 / ____|  ____| | / /_   _|__   __|
@@ -15,13 +22,6 @@
 ⭐ If you enjoy this software, give it a star:
 https://github.com/jinxedbuffer/cfkit
 ```
-
-cfkit is a CLI tool for competitive programming leveraging Codeforces API.
-
-**Terminals tested on**: kitty, Konsole
-
-**Fun fact**: I made this software so I can find random problems to solve everyday because I suck at competitive
-programming and want to get better at it.
 
 ## Table of Contents
 
