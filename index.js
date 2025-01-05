@@ -72,7 +72,7 @@ program
     .description('Generate files (`in.txt`, `out.txt`, `main.cpp`)')
     .option('-p, --problem <id>', 'Generate files for a problem')
     .option('-c, --contest <id>', 'Generates files for each problem in contest')
-    .option('-t, --template <file>', 'Template to use for `main.cpp`', 'template.cpp')
+    .option('-t, --template <file>', 'Placeholder to use for `main.cpp`', 'template.cpp')
     .action(generate);
 
 program
