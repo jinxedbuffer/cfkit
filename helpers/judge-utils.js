@@ -31,7 +31,7 @@ export async function compile(codePath) {
     }
 }
 
-export async function run(executablePath, inputPath, expectedPath) {
+export async function run(executablePath, inputPath, expectedPath, timeout = 5000) {
     const spinner = ora('Executing code').start();
     try {
         const inputFile = await fs.readFile(inputPath, 'utf8');
@@ -53,20 +53,33 @@ export async function run(executablePath, inputPath, expectedPath) {
 
             const actualOutput = await new Promise((resolve, reject) => {
                 const process = exec(executablePath);
+
+                let output = '';
+                let error = '';
+                let timeoutId;
+
+                timeoutId = setTimeout(() => {
+                    process.kill();
+                }, timeout);
+
                 process.stdin.write(input);
                 process.stdin.end();
 
-                let output = '';
                 process.stdout.on('data', (data) => {
                     output += data.toString();
                 });
 
                 process.stderr.on('data', (data) => {
-                    reject(data.toString());
+                    error += data.toString();
                 });
 
-                process.on('close', () => {
-                    resolve(output.trim());
+                process.on('close', (code) => {
+                    clearTimeout(timeoutId);
+                    if (code === 0) {
+                        resolve(output.trim());
+                    } else {
+                        reject(error || `Process exited with code ${code}`);
+                    }
                 });
             });
 
