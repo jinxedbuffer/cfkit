@@ -1,6 +1,6 @@
 {
   "name": "@jinxedbuffer/cfkit",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "cfkit is a CLI tool for competitive programming leveraging Codeforces API.",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "cheerio": "^1.0.0",
     "cli-table3": "^0.6.5",
     "commander": "^13.0.0",
+    "he": "^1.2.0",
     "inquirer": "^12.3.0",
     "moment": "^2.30.1",
     "moment-duration-format": "^2.3.2",

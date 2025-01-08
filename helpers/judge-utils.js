@@ -22,10 +22,10 @@ export async function compile(codePath) {
             });
         });
 
-        spinner.succeed('Compilation successful');
+        spinner.succeed(' Compilation successful');
         return executablePath;
     } catch (e) {
-        spinner.fail(`Compilation failed`);
+        spinner.fail(` Compilation failed`);
         console.log(e.message);
         return null;
     }

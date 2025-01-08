@@ -21,14 +21,14 @@ export const blog = async function (cmd) {
             blogs = res.result;
             setCache(`blogs-${cmd.user}`, blogs);
         } catch (e) {
-            spinner.fail('Failed to fetch blogs');
+            spinner.fail(' Failed to fetch blogs');
             console.error(e);
             return;
         }
     }
 
     if (blogs.length === 0) {
-        spinner.fail(`No blogs found`);
+        spinner.fail(` No blogs found`);
     } else {
         spinner.stop();
         displayBlogsMenu(cmd, blogs);

@@ -29,7 +29,7 @@ export const problem = async function (cmd, back) {
 
             setCache('problems', problems);
         } catch (e) {
-            spinner.fail('Network Error: Failed to fetch problems');
+            spinner.fail(' Network Error: Failed to fetch problems');
             console.error(e);
             return;
         }
@@ -38,7 +38,7 @@ export const problem = async function (cmd, back) {
     if (cmd.id) {
         const match = cmd.id.match(/^(\d+)([A-Z]\d*)$/);
         if (!match) {
-            spinner.fail(`Invalid problem ID`);
+            spinner.fail(` Invalid problem ID`);
             return;
         }
         const contestId = match[1];
@@ -83,7 +83,7 @@ export const problem = async function (cmd, back) {
     }
 
     if (problems.length === 0) {
-        spinner.fail('No problems found');
+        spinner.fail(' No problems found');
         return;
     }
 

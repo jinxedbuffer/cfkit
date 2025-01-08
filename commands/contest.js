@@ -29,7 +29,7 @@ export const contest = async function (cmd, back) {
             contests = res.result;
             setCache((cmd.gym) ? 'contests-gym' : 'contests', contests);
         } catch (error) {
-            spinner.fail('Failed to fetch contests');
+            spinner.fail(' Failed to fetch contests');
             console.error(error);
             return;
         }
@@ -77,7 +77,7 @@ export const contest = async function (cmd, back) {
     }
 
     if (contests.length === 0) {
-        spinner.fail('No contests found');
+        spinner.fail(' No contests found');
         return;
     }
 

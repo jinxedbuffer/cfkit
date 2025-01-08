@@ -30,22 +30,18 @@ const logo =
     "https://github.com/jinxedbuffer/cfkit";
 
 
-// default action
 program
     .action(() => {
         console.log('See `cf -h` for help');
     });
 
-// info
-
 program
     .name('cf')
     .description(logo)
     .usage('[command] [options]')
-    .version('0.1.13', '-v, --version', 'Output the version number')
+    .version('0.1.14', '-v, --version', 'Output the version number')
     .helpOption('-h, --help', 'Display help for a command');
 
-// subcommands
 program
     .command('contest')
     .alias('c')
@@ -57,7 +53,6 @@ program
     .option('-l, --limit <limit>', 'Number of contests to show', '100')
     .option('-g, --gym', 'Show only gym contests')
     .action((cmd) => contest(cmd, () => process.exit(0)));
-
 
 program
     .command('problem')

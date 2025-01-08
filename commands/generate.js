@@ -41,9 +41,9 @@ export const generate = async function (cmd) {
         fs.writeFileSync(inputFile, '');
         fs.writeFileSync(outputFile, '');
         fs.writeFileSync(codeFile, '');
-        spinner.succeed('Successfully generated files');
+        spinner.succeed(' Successfully generated files');
     } catch (e) {
-        spinner.fail('Failed to generate files');
+        spinner.fail(' Failed to generate files');
         console.log(e);
     }
 }

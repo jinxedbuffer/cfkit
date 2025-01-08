@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import he from 'he';
 
 export const CURRENT_WORKING_DIR = process.cwd();
 
@@ -46,9 +47,9 @@ export const getTestCases = async function (contestId, problemIndex) {
             });
             input = input.join('\n');
         } else {
-            input = $(el).html().replace(/<br>/g, '\n');
+            input = he.decode($(el).html().replace(/<br>/g, '\n'));
         }
-        const output = $(outputs[i]).html().replace(/<br>/g, '\n');
+        const output = he.decode($(outputs[i]).html().replace(/<br>/g, '\n'));
 
         testCases.push({input, output});
     });
