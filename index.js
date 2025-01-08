@@ -39,7 +39,7 @@ program
     .name('cf')
     .description(logo)
     .usage('[command] [options]')
-    .version('0.1.14', '-v, --version', 'Output the version number')
+    .version('0.1.15', '-v, --version', 'Output the version number')
     .helpOption('-h, --help', 'Display help for a command');
 
 program

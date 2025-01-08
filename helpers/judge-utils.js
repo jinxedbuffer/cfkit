@@ -41,7 +41,7 @@ export async function run(executablePath, inputPath, expectedPath, timeout = 500
         const expectedCases = expectedFile.split(SEPARATOR).map((s) => s.trim());
 
         if (inputCases.length !== expectedCases.length) {
-            spinner.fail("Number of input cases and expected output cases do not match");
+            spinner.fail(" Number of input cases and expected output cases do not match");
             return;
         }
 
@@ -86,7 +86,7 @@ export async function run(executablePath, inputPath, expectedPath, timeout = 500
             const endTime = performance.now();
             const executionTime = endTime - startTime;
 
-            spinner.succeed(`Execution for testcase ${i + 1} successful (took ${executionTime.toFixed(2)} ms)`);
+            spinner.succeed(` Execution for testcase ${i + 1} successful (took ${executionTime.toFixed(2)} ms)`);
 
             if (actualOutput === expectedOutput) {
                 console.log(`Testcase ${i + 1}: [+] Passed`);
@@ -97,7 +97,7 @@ export async function run(executablePath, inputPath, expectedPath, timeout = 500
         }
 
     } catch (e) {
-        spinner.fail(`Execution failed`);
+        spinner.fail(` Execution failed`);
         console.error(e);
     }
 }

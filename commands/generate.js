@@ -58,7 +58,7 @@ const generateContestFiles = async function (contestId) {
             await generateProblemFiles(`${contestId}${index}`);
         }
     } catch (e) {
-        spinner.fail(`Failed to generate files for contest # ${contestId}`);
+        spinner.fail(` Failed to generate files for contest # ${contestId}`);
         console.error(e);
     }
 }
@@ -92,9 +92,9 @@ const generateProblemFiles = async function (problemId) {
         fs.writeFileSync(inputFile, inputBuffer);
         fs.writeFileSync(outputFile, outputBuffer);
         fs.writeFileSync(codeFile, CODE_TEMPLATE);
-        spinner.succeed(`Successfully generated files for problem # ${problemId}`);
+        spinner.succeed(` Successfully generated files for problem # ${problemId}`);
     } catch (e) {
-        spinner.fail(`Failed to generate files for problem # ${problemId}`);
+        spinner.fail(` Failed to generate files for problem # ${problemId}`);
         console.error(e);
     }
 }
